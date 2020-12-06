@@ -17,6 +17,14 @@ class _MenuCategoryDetailScreenState extends State<MenuCategoryDetailScreen> {
       backgroundColor: Colors.white10,
       body: Container(
         padding: const EdgeInsets.symmetric(horizontal: 15.0),
+        decoration: BoxDecoration(
+            color: Colors.red,
+            image: DecorationImage(
+              image: AssetImage('assets/images/sefler-menu-bg2.jpg'),
+              fit: BoxFit.cover,
+              colorFilter: new ColorFilter.mode(primaryColorDark.withOpacity(.8), BlendMode.srcOver),
+            )
+        ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [

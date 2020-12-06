@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:provider/provider.dart';
+import 'package:sefler_menu/services/MenusService.dart';
 import 'style.dart';
 import 'screens/screens.dart';
 
@@ -34,10 +36,27 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
 
+  MenusService _menus = new MenusService();
+
 
   @override
   Widget build(BuildContext context) {
 
+    return MultiProvider(
+      providers:  [
+        ChangeNotifierProvider<MenusService>.value(value: _menus),
+      ],
+      child:  Consumer<MenusService>(builder: (context, model, child) {
+
+        return _homeScanner(context);
+      }),
+
+    );
+
+
+  }
+
+  Widget _homeScanner(context) {
     return Scaffold(
       body: Stack(
         children: [
@@ -45,8 +64,8 @@ class _MyHomePageState extends State<MyHomePage> {
             decoration: BoxDecoration(
                 color: Colors.red,
                 image: DecorationImage(
-                  image: AssetImage('assets/images/sefler-menu-home-bg.jpg'),
-                  fit: BoxFit.cover
+                    image: AssetImage('assets/images/sefler-menu-home-bg.jpg'),
+                    fit: BoxFit.cover
                 )
             ),
           ),

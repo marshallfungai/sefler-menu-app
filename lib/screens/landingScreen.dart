@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:sefler_menu/screens/screens.dart';
 import '../widgets/widgets.dart';
 
 class LandingScreen extends StatefulWidget {
@@ -34,9 +33,7 @@ class _LandingScreenState extends State<LandingScreen> {
             color: Colors.white,
             borderRadius: BorderRadius.all( Radius.circular(10) ),
           ),
-          child: Center(child: GestureDetector(
-              onTap: (){ Navigator.push(context, MaterialPageRoute(builder: (context)=> MenuCategoryScreen()));},
-              child: Text('Powered by : Nethouse'))),
+          child: Center(child: Text('Powered by : Nethouse')),
         ))
       ],
     );
