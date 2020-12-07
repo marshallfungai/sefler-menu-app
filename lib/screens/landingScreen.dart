@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../widgets/widgets.dart';
+import 'menuCategoryScreen.dart';
 
 class LandingScreen extends StatefulWidget {
   @override
@@ -33,7 +34,9 @@ class _LandingScreenState extends State<LandingScreen> {
             color: Colors.white,
             borderRadius: BorderRadius.all( Radius.circular(10) ),
           ),
-          child: Center(child: Text('Powered by : Nethouse')),
+          child: GestureDetector(
+            onTap: (){Navigator.push(context, MaterialPageRoute(builder: (context)=> MenuCategoryScreen(  restaurantDataURL:  'restaurantDataURL')));},
+              child: Center(child: Text('Powered by : Nethouse'))),
         ))
       ],
     );

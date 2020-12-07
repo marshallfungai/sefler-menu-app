@@ -1,11 +1,30 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:sefler_menu/services/MenusService.dart';
+import 'package:sefler_menu/models/RestaurantModel.dart';
+import 'models/ContactModel.dart';
+import 'models/MenuItemsModel.dart';
+import 'models/MenusModel.dart';
+import 'models/OpenDaysModel.dart';
+import 'services/MenusService.dart';
 import 'style.dart';
 import 'screens/screens.dart';
 
-void main() {
+main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  Directory document = await getApplicationDocumentsDirectory();
+  Hive.init(document.path);
+
+  Hive.registerAdapter(RestaurantModelAdapter());
+  Hive.registerAdapter(ContactAdapter());
+  Hive.registerAdapter(ItemsAdapter());
+  Hive.registerAdapter(MenusCatAdapter());
+  Hive.registerAdapter(OpenDaysAdapter());
+
   runApp(MyApp());
 }
 

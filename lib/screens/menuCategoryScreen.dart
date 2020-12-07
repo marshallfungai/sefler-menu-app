@@ -1,5 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:sefler_menu/screens/screens.dart';
 import 'package:sefler_menu/services/MenusService.dart';
@@ -7,9 +9,9 @@ import 'package:sefler_menu/style.dart';
 
 class MenuCategoryScreen extends StatefulWidget {
 
-  final restaurantID;
+  final restaurantDataURL;
 
-  MenuCategoryScreen({this.restaurantID});
+  MenuCategoryScreen({this.restaurantDataURL});
 
   @override
   _MenuCategoryScreenState createState() => _MenuCategoryScreenState();
@@ -22,21 +24,17 @@ class _MenuCategoryScreenState extends State<MenuCategoryScreen> {
   var pageIndex = 0;
   Future<bool> _checkMenuFound;
 
-  List<dynamic> categoryMenuList = [
-    'Chicken Menu',
-    'Meat Menu',
-    'Vegetarian Menu',
-    'Pizzas',
-    'Non-Alcoholic Drinks',
-    'Alcoholic Drinks',
-  ];
+  Box<dynamic> menuBox;
+
+  List<dynamic> categoryMenuList ;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
 
-    _checkMenuFound = _menusService.getInfo('qrq');
+    _checkMenuFound = _menusService.getInfo(widget.restaurantDataURL);
+
   }
 
   @override
@@ -61,14 +59,12 @@ class _MenuCategoryScreenState extends State<MenuCategoryScreen> {
           child: FutureBuilder(
             future: _checkMenuFound,
             builder: (ctx, snapshot) {
-              print(snapshot.data);
-
-              if(snapshot.hasData){
+             if(snapshot.hasData){
                 if(snapshot.data == true)
-                  return _menuCategoryPage(context);
+                  return _menuCategoryPage(context, widget.restaurantDataURL);
                 else
 
-                return Center(child: Text('No Data Found'),);
+                return Center(child: Text('No Data Found', style: TextStyle(color: Colors.white),),);
               }
               else {
                 return  Center(child: CircularProgressIndicator(),);
@@ -81,10 +77,17 @@ class _MenuCategoryScreenState extends State<MenuCategoryScreen> {
 
 
 
-  Widget _menuCategoryPage(context) {
+  Widget _menuCategoryPage(context, restaurantDataURL) {
 
     double windowHeight = MediaQuery.of(context).size.height;
     double windowWidth = MediaQuery.of(context).size.width;
+
+    menuBox =  Hive.box<dynamic>('restaurantDataURL');
+
+    String restaurantName = menuBox.get('restaurant_name');
+    var menus =  menuBox.get("restaurant_menus");
+    categoryMenuList = menus;
+
 
     return  Column(
       children: [
@@ -110,7 +113,7 @@ class _MenuCategoryScreenState extends State<MenuCategoryScreen> {
             ),
             Container(
                 margin: EdgeInsets.only(top: windowHeight * 0.05 ),
-                child: Text('Indigo Bar',  style: TextStyle(fontWeight: FontWeight.bold,  fontSize: 40, color: Colors.white.withOpacity(0.7)))),
+                child: Text(restaurantName,  style: TextStyle(fontWeight: FontWeight.bold,  fontSize: 30, color: Colors.white.withOpacity(0.7)))),
           ],
         ),
         Expanded(
@@ -132,10 +135,10 @@ class _MenuCategoryScreenState extends State<MenuCategoryScreen> {
               });
             },
 
-            items: categoryMenuList.map((index) {
+            items: categoryMenuList.map((menuCat) {
               return Builder(
                 builder: (BuildContext context) {
-                  return _category(context, index);
+                  return _category(context, menuCat);
                 },
               );
             }).toList(),
@@ -148,7 +151,7 @@ class _MenuCategoryScreenState extends State<MenuCategoryScreen> {
 
 
 
-  Widget _category(context, index) {
+  Widget _category(context, menuCat ) {
 
 
     double windowHeight = MediaQuery.of(context).size.height;
@@ -156,8 +159,8 @@ class _MenuCategoryScreenState extends State<MenuCategoryScreen> {
 
     return GestureDetector(
       onTap: (){
-        Navigator.push(context, MaterialPageRoute(builder: (context)=> MenuCategoryDetailScreen()));
-        //print('print here');
+        Navigator.push(context, MaterialPageRoute(builder: (context)=> MenuCategoryDetailScreen(menu: menuCat,)));
+
         },
       child: Container(
         //height: 300,
@@ -168,7 +171,7 @@ class _MenuCategoryScreenState extends State<MenuCategoryScreen> {
         ),
         child: GestureDetector(
           child: Center(
-            child: Text(' $index',  style: TextStyle(color: Colors.white, fontSize: 20,)),
+            child: Text( menuCat.nameEn,  style: TextStyle(color: Colors.white, fontSize: 20,)),
           ),
         ),
       ),

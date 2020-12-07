@@ -1,14 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:sefler_menu/models/MenuItemsModel.dart';
 import 'package:sefler_menu/style.dart';
 
 class MenuCategoryDetailScreen extends StatefulWidget {
+  final menu;
+  MenuCategoryDetailScreen({this.menu});
+
   @override
   _MenuCategoryDetailScreenState createState() => _MenuCategoryDetailScreenState();
 }
 
 class _MenuCategoryDetailScreenState extends State<MenuCategoryDetailScreen> {
+
+  Box<dynamic> menuBox;
+
+  List<Items> categoryMenuItems;
+
+
+
   @override
   Widget build(BuildContext context) {
+
+    menuBox =  Hive.box<dynamic>('restaurantDataURL');
+
+    String restaurantName = menuBox.get('restaurant_name');
+    var items =  menuBox.get("restaurant_menus_items");
+    categoryMenuItems= items;
 
     double windowHeight = MediaQuery.of(context).size.height;
     double windowWidth = MediaQuery.of(context).size.width;
@@ -52,14 +70,14 @@ class _MenuCategoryDetailScreenState extends State<MenuCategoryDetailScreen> {
                   SizedBox(width: 20),
                   Container(
                     // margin: EdgeInsets.only(top: windowHeight * 0.1 ),
-                      child: Text('Chicken Menu',  style: TextStyle(fontSize: 33, color: Colors.white))),
+                      child: Text(widget.menu.nameEn,  style: TextStyle(fontSize: 23, color: Colors.white))),
                 ],
               ),
             ),
             Expanded(
               child: ListView.builder(
-                itemCount: 10,
-                itemBuilder: (context, index) => _categoryDetail(context, index)
+                itemCount: widget.menu.items.length,
+                itemBuilder: (context, item) => _categoryDetail(context, item)
                ),
             )
           ],
@@ -71,9 +89,10 @@ class _MenuCategoryDetailScreenState extends State<MenuCategoryDetailScreen> {
   Widget _categoryDetail(context, index) {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
+    var menuItem = widget.menu.items[index];
 
     return Container(
-      height: height * .20,
+      height: height * .19,
 
       child: Card(
         color: Colors.white10,
@@ -93,7 +112,7 @@ class _MenuCategoryDetailScreenState extends State<MenuCategoryDetailScreen> {
               decoration: BoxDecoration(
                 // borderRadius: BorderRadius.circular(20),
                   image: DecorationImage(
-                      image: AssetImage('assets/images/chicken-menu.jpg'),
+                      image: NetworkImage(menuItem.image),
                       fit: BoxFit.cover)
               ),
             ),
@@ -106,7 +125,7 @@ class _MenuCategoryDetailScreenState extends State<MenuCategoryDetailScreen> {
                     Container(
                       alignment: Alignment.topLeft,
                       child: Text(
-                        'Food item',
+                        menuItem.nameEn,
                         style: TextStyle(
                           color: Colors.white.withOpacity(0.8),
                           fontSize: 16,
@@ -115,15 +134,15 @@ class _MenuCategoryDetailScreenState extends State<MenuCategoryDetailScreen> {
                     ),
                     Container(
                       alignment: Alignment.topLeft,
-                      child:  Text('Lorem ipsum dolor sit amet, consectetur adipiscing elit. ', style: TextStyle(color: Colors.white.withOpacity(0.5)),),
+                      child:  Text(menuItem.descriptionEn, maxLines: 2, style: TextStyle(color: Colors.white.withOpacity(0.5)),),
                     ),
                     Container(
                       alignment: Alignment.topLeft,
                       child:OutlineButton(
                         onPressed: () {
-                          print('Received click');
+                        //  print('Received click');
                         },
-                        child: Text('25.00 TL ', style: TextStyle(color: Colors.deepOrange.withOpacity(0.5)),),
+                        child: Text(menuItem.price, style: TextStyle(color: Colors.deepOrange.withOpacity(0.5)),),
                       ),
                     ),
                   ],

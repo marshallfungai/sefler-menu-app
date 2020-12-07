@@ -16,7 +16,7 @@ class _QrCodeScannerState extends State<QrCodeScanner> {
 
 
   var result ;
-  var resultType, restaurantID ;
+  var resultType,  restaurantDataURL ;
   bool resultStatus = false;
 
   // print(result.type); // The result type (barcode, cancelled, failed)
@@ -30,7 +30,7 @@ class _QrCodeScannerState extends State<QrCodeScanner> {
     result = null;
     resultType = null;
     resultStatus = false;
-    restaurantID = null;
+    restaurantDataURL = null;
 
     super.initState();
     // Add listeners to this class
@@ -43,9 +43,9 @@ class _QrCodeScannerState extends State<QrCodeScanner> {
         result = qrResult;
         resultType = result.type;
         resultStatus = true;
-        restaurantID = result.rawContent;
+        restaurantDataURL = result.rawContent;
         //print('scammed item ${result.type}');
-        Navigator.push(context, MaterialPageRoute(builder: (context)=> MenuCategoryScreen( restaurantID: restaurantID)));
+        Navigator.push(context, MaterialPageRoute(builder: (context)=> MenuCategoryScreen(  restaurantDataURL:  restaurantDataURL)));
 
       });
     } on PlatformException catch (ex) {
@@ -94,8 +94,6 @@ class _QrCodeScannerState extends State<QrCodeScanner> {
       child: FloatingActionButton(
         onPressed:  (){
            _scanQR();
-           print('Restaurant id $restaurantID');
-           // _menuFetch.getInfo(restaurantID );
 
         },
         child: Column(

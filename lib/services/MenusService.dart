@@ -1,35 +1,52 @@
-import 'dart:convert';
+import 'dart:convert' as convert;
 import 'dart:io';
 
 import 'package:hive/hive.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:sefler_menu/models/SectionModel.dart';
+import 'package:sefler_menu/models/RestaurantModel.dart';
 
 class MenusService extends ChangeNotifier {
 
 
-
-  final apiBaseUrl  = 'https://api.mockaroo.com/api/';
-
   MenusService();
 
-  void storeLocalMenu(id_restaurant, menuInfo) {
+  void storeLocalMenu( restaurantDataURL, restaurantInfo) async {
 
-    //Check if it exists locally
-    // var restInfo = box.get(id_restaurant);
+
+
+    bool menuExits = await Hive.boxExists('restaurantDataURL');
+
+    var menuBox = await Hive.openBox('restaurantDataURL');
+
+    var name = restaurantInfo.restaurant.name;
+
+    menuBox.put('restaurant_name', name);
+
+    var menus = restaurantInfo.restaurant.menus;
+    var menusItems = restaurantInfo.restaurant.menus.items;
+    menuBox.put('restaurant_menus', menus);
+    menuBox.put('restaurant_menus_items', menusItems);
+
+    menuBox.close();
+
   }
 
-  Future<bool> getInfo(String id_restaurant) async {
+
+
+
+  Future<bool> getInfo(String  restaurantDataURL) async {
     try {
 
-      final fetchMenuURL  = apiBaseUrl + id_restaurant;
-      var _data = await http.post(fetchMenuURL);
-      print('Fetch url ************ $fetchMenuURL');
-      var _menuInfo = CategoryModel.fromJson(json.decode(_data.body));
-      print('data url ************ $_menuInfo');
-      storeLocalMenu(id_restaurant, _menuInfo);
+     var _data = await http.get('http://iambriansith.com/demos/shefler-menu/api/restaurant/1');
+      var jsonResponse;
+      if ( _data.statusCode == 200) {
+         jsonResponse = convert.jsonDecode( _data.body);
+       }
 
+      var _restInfo = RestaurantModel.fromJson(jsonResponse);
+
+      storeLocalMenu(restaurantDataURL, _restInfo );
       notifyListeners();
       return true;
 
