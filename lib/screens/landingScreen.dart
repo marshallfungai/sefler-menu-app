@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../widgets/widgets.dart';
 import 'menuCategoryScreen.dart';
+
 
 class LandingScreen extends StatefulWidget {
   @override
@@ -8,6 +10,11 @@ class LandingScreen extends StatefulWidget {
 }
 
 class _LandingScreenState extends State<LandingScreen> {
+
+  final Uri _nethouseLaunchUri = Uri(
+      scheme: 'https',
+      path: 'nethouse.net'
+  );
 
    @override
   Widget build(BuildContext context) {
@@ -35,7 +42,10 @@ class _LandingScreenState extends State<LandingScreen> {
             borderRadius: BorderRadius.all( Radius.circular(10) ),
           ),
           child: GestureDetector(
-            onTap: (){Navigator.push(context, MaterialPageRoute(builder: (context)=> MenuCategoryScreen(  restaurantDataURL:  'restaurantDataURL')));},
+            onTap: (){
+             // Navigator.push(context, MaterialPageRoute(builder: (context)=> MenuCategoryScreen(  restaurantDataURL:  'restaurantDataURL')));
+              launch(_nethouseLaunchUri.toString());
+              },
               child: Center(child: Text('Powered by : Nethouse'))),
         ))
       ],

@@ -11,34 +11,28 @@ class MenusService extends ChangeNotifier {
 
   MenusService();
 
-  void storeLocalMenu( restaurantDataURL, restaurantInfo) async {
-
-
-
-    bool menuExits = await Hive.boxExists('restaurantDataURL');
-
-    var menuBox = await Hive.openBox('restaurantDataURL');
+  void storeLocalMenu({String restaurantDataURL, RestaurantModel restaurantInfo, Box menuBox}) async {
 
     var name = restaurantInfo.restaurant.name;
 
     menuBox.put('restaurant_name', name);
 
     var menus = restaurantInfo.restaurant.menus;
-    var menusItems = restaurantInfo.restaurant.menus.items;
+    var menusItems = restaurantInfo.restaurant.menus;
+
     menuBox.put('restaurant_menus', menus);
     menuBox.put('restaurant_menus_items', menusItems);
 
-    menuBox.close();
 
   }
 
 
+  Future<bool> getInfo({String restaurantDataURL, HiveBox }) async {
 
-
-  Future<bool> getInfo(String  restaurantDataURL) async {
     try {
 
-     var _data = await http.get('http://iambriansith.com/demos/shefler-menu/api/restaurant/1');
+     //var _data = await http.get('http://iambriansith.com/demos/shefler-menu/api/restaurant/1');
+      var _data = await http.get(restaurantDataURL);
       var jsonResponse;
       if ( _data.statusCode == 200) {
          jsonResponse = convert.jsonDecode( _data.body);
@@ -46,7 +40,8 @@ class MenusService extends ChangeNotifier {
 
       var _restInfo = RestaurantModel.fromJson(jsonResponse);
 
-      storeLocalMenu(restaurantDataURL, _restInfo );
+      storeLocalMenu(restaurantDataURL : restaurantDataURL, restaurantInfo : _restInfo, menuBox: HiveBox );
+
       notifyListeners();
       return true;
 

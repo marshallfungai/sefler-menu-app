@@ -21,11 +21,10 @@ class MenuCategoryScreen extends StatefulWidget {
 class _MenuCategoryScreenState extends State<MenuCategoryScreen> {
 
   MenusService _menusService = new MenusService();
+  Future<bool> _checkMenuFound ;
+
   var pageIndex = 0;
-  Future<bool> _checkMenuFound;
-
   Box<dynamic> menuBox;
-
   List<dynamic> categoryMenuList ;
 
   @override
@@ -33,9 +32,18 @@ class _MenuCategoryScreenState extends State<MenuCategoryScreen> {
     // TODO: implement initState
     super.initState();
 
-    _checkMenuFound = _menusService.getInfo(widget.restaurantDataURL);
+    _checkMenuFound = processMenuData();
 
   }
+
+
+  Future <bool> processMenuData() async {
+
+     menuBox = await Hive.openBox('restaurantDataURL');
+     return _menusService.getInfo(restaurantDataURL: widget.restaurantDataURL, HiveBox: menuBox);
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -55,20 +63,20 @@ class _MenuCategoryScreenState extends State<MenuCategoryScreen> {
                     colorFilter: new ColorFilter.mode(primaryColorDark.withOpacity(.8), BlendMode.srcOver),
                 )
             ),
-        //  child: _menuCategoryPage(context),
           child: FutureBuilder(
             future: _checkMenuFound,
             builder: (ctx, snapshot) {
-             if(snapshot.hasData){
-                if(snapshot.data == true)
-                  return _menuCategoryPage(context, widget.restaurantDataURL);
-                else
 
+              if(snapshot.connectionState == ConnectionState.waiting) {
+                  return  Center(child: CircularProgressIndicator(),);
+              }
+
+              if(snapshot.connectionState == ConnectionState.none && snapshot.data==null) {
                 return Center(child: Text('No Data Found', style: TextStyle(color: Colors.white),),);
               }
-              else {
-                return  Center(child: CircularProgressIndicator(),);
-              }
+
+              return _menuCategoryPage(context, widget.restaurantDataURL);
+
             },
           ),
         )
@@ -86,7 +94,6 @@ class _MenuCategoryScreenState extends State<MenuCategoryScreen> {
 
     String restaurantName = menuBox.get('restaurant_name');
     var menus =  menuBox.get("restaurant_menus");
-    categoryMenuList = menus;
 
 
     return  Column(
@@ -135,7 +142,7 @@ class _MenuCategoryScreenState extends State<MenuCategoryScreen> {
               });
             },
 
-            items: categoryMenuList.map((menuCat) {
+            items: menus.map<Widget>((menuCat) {
               return Builder(
                 builder: (BuildContext context) {
                   return _category(context, menuCat);

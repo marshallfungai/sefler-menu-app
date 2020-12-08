@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
-import 'package:sefler_menu/models/MenuItemsModel.dart';
 import 'package:sefler_menu/style.dart';
 
 class MenuCategoryDetailScreen extends StatefulWidget {
@@ -15,18 +14,10 @@ class _MenuCategoryDetailScreenState extends State<MenuCategoryDetailScreen> {
 
   Box<dynamic> menuBox;
 
-  List<Items> categoryMenuItems;
-
-
-
   @override
   Widget build(BuildContext context) {
 
     menuBox =  Hive.box<dynamic>('restaurantDataURL');
-
-    String restaurantName = menuBox.get('restaurant_name');
-    var items =  menuBox.get("restaurant_menus_items");
-    categoryMenuItems= items;
 
     double windowHeight = MediaQuery.of(context).size.height;
     double windowWidth = MediaQuery.of(context).size.width;
@@ -69,7 +60,7 @@ class _MenuCategoryDetailScreenState extends State<MenuCategoryDetailScreen> {
                   ),
                   SizedBox(width: 20),
                   Container(
-                    // margin: EdgeInsets.only(top: windowHeight * 0.1 ),
+
                       child: Text(widget.menu.nameEn,  style: TextStyle(fontSize: 23, color: Colors.white))),
                 ],
               ),
