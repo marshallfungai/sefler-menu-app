@@ -32,7 +32,7 @@ class MenusService extends ChangeNotifier {
     try {
 
      //var _data = await http.get('http://iambriansith.com/demos/shefler-menu/api/restaurant/1');
-      var _data = await http.get(restaurantDataURL);
+     var _data = await http.get(restaurantDataURL);
       var jsonResponse;
       if ( _data.statusCode == 200) {
          jsonResponse = convert.jsonDecode( _data.body);
@@ -43,7 +43,13 @@ class MenusService extends ChangeNotifier {
       storeLocalMenu(restaurantDataURL : restaurantDataURL, restaurantInfo : _restInfo, menuBox: HiveBox );
 
       notifyListeners();
-      return true;
+     if ( _data.statusCode == 200) {
+       return true;
+     }
+     else {
+       return false;
+     }
+
 
     } catch (e) {
       print("Could Not Load Data: $e");

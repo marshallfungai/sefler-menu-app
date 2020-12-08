@@ -9,7 +9,7 @@ import 'models/ContactModel.dart';
 import 'models/MenuItemsModel.dart';
 import 'models/MenusModel.dart';
 import 'models/OpenDaysModel.dart';
-import 'services/MenusService.dart';
+import 'services/SharedPreferenceService.dart';
 import 'style.dart';
 import 'screens/screens.dart';
 
@@ -39,65 +39,43 @@ class MyApp extends StatelessWidget {
         fontFamily: 'Poppins',
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: MyHomePage(title: 'Şefler Menü'),
+      home: RedirectToInit(),
     );
   }
 }
+ class RedirectToInit extends StatefulWidget {
+   @override
+   _RedirectToInitState createState() => _RedirectToInitState();
+ }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+ class _RedirectToInitState extends State<RedirectToInit> {
 
-  final String title;
+   var _checkIsFirstSeen ;
 
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
+   @override
+   void initState() {
+     // TODO: implement initState
+     super.initState();
+     _checkIsFirstSeen = SharedPreferencesStorage.checkSharedPreference("seen");
 
-class _MyHomePageState extends State<MyHomePage> {
-
-  MenusService _menus = new MenusService();
-
-
-  @override
-  Widget build(BuildContext context) {
-
-    return MultiProvider(
-      providers:  [
-        ChangeNotifierProvider<MenusService>.value(value: _menus),
-      ],
-      child:  Consumer<MenusService>(builder: (context, model, child) {
-
-        return _homeScanner(context);
-      }),
-
-    );
+   }
 
 
-  }
+   @override
+   Widget build(BuildContext context) {
+     return FutureBuilder(
+         future: _checkIsFirstSeen,
+         builder: (context, snapshot) {
 
-  Widget _homeScanner(context) {
-    return Scaffold(
-      body: Stack(
-        children: [
-          Container(
-            decoration: BoxDecoration(
-                color: Colors.red,
-                image: DecorationImage(
-                    image: AssetImage('assets/images/sefler-menu-home-bg.jpg'),
-                    fit: BoxFit.cover
-                )
-            ),
-          ),
-          Container(
-            color: primaryColor.withOpacity(0.85),
-            child: Center(
-              child: LandingScreen(),
-            ),
-          )
+         if(snapshot.hasData && snapshot.data == true) {
+             return  MyHomePage();
+           }
 
-        ],
-      ),
-      // This trailing comma makes auto-formatting nicer for build methods.
-    );
-  }
-}
+           return OnBoardingScreen();
+
+         }
+     );
+
+   }
+ }
+
