@@ -4,12 +4,17 @@ import '../widgets/widgets.dart';
 import 'menuCategoryScreen.dart';
 
 
-class LandingScreen extends StatefulWidget {
+class ActionSections extends StatefulWidget {
+
+  final scaffoldKey;
+  ActionSections({this.scaffoldKey});
+
   @override
-  _LandingScreenState createState() => _LandingScreenState();
+  _ActionSections createState() => _ActionSections();
 }
 
-class _LandingScreenState extends State<LandingScreen> {
+class _ActionSections extends State<ActionSections> {
+
 
   final Uri _nethouseLaunchUri = Uri(
       scheme: 'https',
@@ -28,7 +33,7 @@ class _LandingScreenState extends State<LandingScreen> {
           left: 0,
           right: 0,
           top : windowHeight * .40,
-          child: QrCodeScanner(),
+          child: QrCodeScanner(scaffold: widget.scaffoldKey,),
         ),
         Positioned(
          left: 0,

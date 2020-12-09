@@ -75,6 +75,11 @@ class _MenuCategoryScreenState extends State<MenuCategoryScreen> {
                 return Center(child: Text('No Data Found', style: TextStyle(color: Colors.white),),);
               }
 
+              if(snapshot.connectionState == ConnectionState.done && snapshot.data==false) {
+                return Center(child: Text('No Data Found', style: TextStyle(color: Colors.white),),);
+              }
+              //print(snapshot.data);
+             // return Center(child: Text('No Data Found', style: TextStyle(color: Colors.white),),);
               return _menuCategoryPage(context, widget.restaurantDataURL);
 
             },

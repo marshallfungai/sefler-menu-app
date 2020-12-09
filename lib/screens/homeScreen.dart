@@ -21,6 +21,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
 
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   MenusService _menus = new MenusService();
 
 
@@ -43,6 +44,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Widget _homeScanner(context) {
     return Scaffold(
+      key: _scaffoldKey,
       body: Stack(
         children: [
           Container(
@@ -57,7 +59,7 @@ class _MyHomePageState extends State<MyHomePage> {
           Container(
             color: primaryColor.withOpacity(0.85),
             child: Center(
-               child: LandingScreen(),
+               child: ActionSections(scaffoldKey:  _scaffoldKey),
             ),
           )
 

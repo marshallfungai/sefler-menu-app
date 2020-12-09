@@ -8,6 +8,10 @@ import 'package:sefler_menu/screens/screens.dart';
 import 'package:sefler_menu/services/MenusService.dart';
 
 class QrCodeScanner extends StatefulWidget {
+
+  final scaffold;
+  QrCodeScanner({this.scaffold});
+
   @override
   _QrCodeScannerState createState() => _QrCodeScannerState();
 }
@@ -15,7 +19,7 @@ class QrCodeScanner extends StatefulWidget {
 class _QrCodeScannerState extends State<QrCodeScanner> {
 
 
-  var result ;
+  var result, resultContent ;
   var resultType,  restaurantDataURL ;
   bool resultStatus = false;
 
@@ -42,36 +46,47 @@ class _QrCodeScannerState extends State<QrCodeScanner> {
       setState(() {
         result = qrResult;
         resultType = result.type;
-        resultStatus = true;
-        restaurantDataURL = result.rawContent;
-        //print('scammed item ${result.type}');
-        Navigator.push(context, MaterialPageRoute(builder: (context)=> MenuCategoryScreen(  restaurantDataURL:  restaurantDataURL)));
+
+        if(resultType != 'cancelled' && resultType != 'failed' )  {
+           restaurantDataURL = result.rawContent;
+           resultStatus = true;
+        }
+        resultStatus = false;
+        result = 'Tarama iptal edildi...';
 
       });
     } on PlatformException catch (ex) {
       if (ex.code == BarcodeScanner.cameraAccessDenied) {
         setState(() {
-          resultType = result.type;
-          result = "Camera permission was denied";
+
+          resultStatus =false;
+          result = "Kamera izni reddedildi";
           print(result);
+
         });
       } else {
         setState(() {
           result = "Unknown Error $ex";
+          resultStatus =false;
           print(result);
         });
       }
     } on FormatException {
       setState(() {
-        resultType = result.type;
-        result = "You pressed the back button before scanning anything";
+
+        resultStatus =false;
+        result = "Herhangi bir şey taramadan önce geri düğmesine bastınız";
         print(result);
+
+
       });
     } catch (ex) {
       setState(() {
-        resultType = result.type;
+
+        resultStatus =false;
         result = "Unknown Error $ex";
         print(result);
+
       });
     }
 
@@ -84,16 +99,35 @@ class _QrCodeScannerState extends State<QrCodeScanner> {
     double windowWidth = MediaQuery.of(context).size.width;
 
 
-    final _menuFetch = Provider.of<MenusService>(context, listen: true);
-
-
 
     return SizedBox(
       width: windowWidth * .30,
       height:  windowWidth * .30,
       child: FloatingActionButton(
-        onPressed:  (){
-           _scanQR();
+        onPressed:  () async{
+            await _scanQR();
+            if(resultStatus == true) {
+              Navigator.push(context, MaterialPageRoute(builder: (context)=> MenuCategoryScreen(  restaurantDataURL:  restaurantDataURL)));
+            }
+            else {
+
+              final snackbar = SnackBar(
+                backgroundColor: Colors.pinkAccent,
+                duration: Duration(seconds: 5),
+                content: Row(
+                  children: <Widget>[
+                  CircleAvatar(
+                      maxRadius: 20,
+                      backgroundImage: AssetImage("assets/images/sefler-menu-logo.png"),
+                    ),
+                    Spacer(),
+                    Text(result)
+                  ],
+                ),
+              );
+
+              widget.scaffold.currentState.showSnackBar(snackbar);
+            }
 
         },
         child: Column(
