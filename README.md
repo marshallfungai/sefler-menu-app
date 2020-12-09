@@ -2,15 +2,12 @@
 
 ŞeflerMenü : master menu for your convinience
 
-## Getting Started
+To fight the age COVID but still enjoy the usual food and bar visits we both love.
 
-This project is a starting point for a Flutter application.
 
-A few resources to get you started if this is your first Flutter project:
+<div align="center" style="display: flex; flex-direction:row; justify-content: space-around">
+    <img src="/screenshots/Screenshot_onboarding.png" width="400px"/> 
+     <img src="/screenshots/Screenshot_home.png" width="400px"/> 
+</div>
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
