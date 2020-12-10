@@ -41,7 +41,7 @@ class _ActionSections extends State<ActionSections> {
          bottom : windowHeight * .10,
          child: Container(
           padding: EdgeInsets.all(5),
-          margin: EdgeInsets.symmetric(horizontal:  100),
+          margin: EdgeInsets.symmetric(horizontal:  90),
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.all( Radius.circular(10) ),
@@ -51,7 +51,7 @@ class _ActionSections extends State<ActionSections> {
              // Navigator.push(context, MaterialPageRoute(builder: (context)=> MenuCategoryScreen(  restaurantDataURL:  'restaurantDataURL')));
               launch(_nethouseLaunchUri.toString());
               },
-              child: Center(child: Text('Powered by : Nethouse'))),
+              child: Center(child: Text('Sponsored By : Nethouse'))),
         ))
       ],
     );

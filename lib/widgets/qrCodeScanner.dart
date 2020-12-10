@@ -38,6 +38,7 @@ class _QrCodeScannerState extends State<QrCodeScanner> {
 
     super.initState();
     // Add listeners to this class
+    resultStatus = false;
   }
 
   Future _scanQR() async {
@@ -47,12 +48,19 @@ class _QrCodeScannerState extends State<QrCodeScanner> {
         result = qrResult;
         resultType = result.type;
 
-        if(resultType != 'cancelled' && resultType != 'failed' )  {
+        print('------------------------------- type');
+        print( result);
+        print(result.type);
+        print(resultType);
+
+        resultStatus = false;
+        result = 'Tarama iptal edildi...';
+
+        if(result.type == 'Barcode')  {
            restaurantDataURL = result.rawContent;
            resultStatus = true;
         }
-        resultStatus = false;
-        result = 'Tarama iptal edildi...';
+
 
       });
     } on PlatformException catch (ex) {

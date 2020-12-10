@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sefler_menu/screens/screens.dart';
 import 'package:sefler_menu/services/SharedPreferenceService.dart';
@@ -20,6 +21,10 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
 
   @override
   Widget build(BuildContext context) {
+
+    double windowHeight = MediaQuery.of(context).size.height;
+    double windowWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
         body:  Container(
 
@@ -38,7 +43,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                       horizontal: 32
                   ),
                   margin: EdgeInsets.only(
-                      top: 100
+                      top: windowHeight * .10
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -46,19 +51,10 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                       Container(
 
                           child: CircleAvatar(
-                            maxRadius: 70,
+                            maxRadius: windowWidth * .15,
                             backgroundImage: AssetImage("assets/images/sefler-menu-logo.png"),
                           ),
 
-                        // child: Text(
-                        //   'Şefler Menu',
-                        //  textAlign: TextAlign.left,
-                        //   style: TextStyle(
-                        //       color:  Colors.white.withOpacity(.7),
-                        //       fontSize: 35,
-                        //        fontWeight: FontWeight.w700
-                        //   ),
-                        // ),
                       ),
                       Container(
                         margin: EdgeInsets.symmetric(vertical: 20),
@@ -86,13 +82,30 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                       ),
                       Container(
                         margin: EdgeInsets.symmetric(vertical: 20),
-                        child: Text(
-                          'Created by Nethouse Networks for the community.',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              color: Colors.white.withOpacity(0.7),
-                              fontSize: 16
-                          ),
+                        child: Column(
+                          children: [
+                            Text(
+                              'Sponsored By',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: Colors.white.withOpacity(0.9),
+                                  fontSize: 16,
+                                fontWeight: FontWeight.bold
+                              ),
+                            ),
+                            SizedBox(height: windowHeight * .01,),
+                            Image.asset('assets/images/nethouse-networks.png', height: windowHeight * .04,),
+                            SizedBox(height: windowHeight * .01,),
+                            Text(
+                              'For The Community.',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: Colors.white.withOpacity(0.9),
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold
+                              ),
+                            ),
+                          ],
                         ),
                       ),
 
@@ -113,7 +126,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                         ),
                         color: Colors.white,
                         child: Text(
-                          'Get The Menus',
+                          'Get Started',
                           style: TextStyle( fontSize: 15),
                         ),
                         onPressed: () {
