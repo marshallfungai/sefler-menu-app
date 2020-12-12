@@ -183,12 +183,19 @@ class _MenuCategoryScreenState extends State<MenuCategoryScreen> {
         ),
         child: GestureDetector(
           child: Center(
-            child: Text( menuCat.nameEn,  style: TextStyle(color: Colors.white, fontSize: 20,)),
+            child: Text(getCapitalizeString(str: menuCat.nameEn),  style: TextStyle(color: Colors.white, fontSize: 20)),
           ),
         ),
       ),
     );
   }
 
+  String getCapitalizeString({String str}) {
+    var words = str.split(" ");
+    var newWords = words.map<String>((word) {
+      return word[0].toUpperCase() + word.substring(1);
+    });
 
+    return newWords.join(' ');
+  }
 }

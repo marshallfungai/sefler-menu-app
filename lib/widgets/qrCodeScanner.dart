@@ -45,19 +45,19 @@ class _QrCodeScannerState extends State<QrCodeScanner> {
     try {
       var qrResult = await BarcodeScanner.scan();
       setState(() {
-        result = qrResult;
-        resultType = result.type;
+
+        resultType = qrResult.type;
 
         print('------------------------------- type');
-        print( result);
-        print(result.type);
+
+        print(qrResult.type);
         print(resultType);
 
-        resultStatus = false;
+
         result = 'Tarama iptal edildi...';
 
-        if(result.type == 'Barcode')  {
-           restaurantDataURL = result.rawContent;
+        if(resultType.toString() == 'Barcode')  {
+           restaurantDataURL = qrResult.rawContent;
            resultStatus = true;
         }
 
@@ -109,8 +109,10 @@ class _QrCodeScannerState extends State<QrCodeScanner> {
 
 
     return SizedBox(
+
       width: windowWidth * .30,
       height:  windowWidth * .30,
+
       child: FloatingActionButton(
         onPressed:  () async{
             await _scanQR();

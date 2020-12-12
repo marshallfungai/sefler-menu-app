@@ -83,7 +83,7 @@ class _MenuCategoryDetailScreenState extends State<MenuCategoryDetailScreen> {
     var menuItem = widget.menu.items[index];
 
     return Container(
-      height: height * .19,
+      height: height * .20,
 
       child: Card(
         color: Colors.white10,

@@ -59,7 +59,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                       Container(
                         margin: EdgeInsets.symmetric(vertical: 20),
                         child: Text(
-                          'The app that gets you all your menus from your favorite place across Cyprus restaurants. Keep your hands to yourself, stay safe and enjoy the food.',
+                          'The app that gets you all your menus favorite place across Cyprus restaurants, bars and coffee shops. Keep your hands to yourself, stay safe and enjoy the food.',
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               color: Colors.white.withOpacity(0.7),
