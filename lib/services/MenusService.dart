@@ -23,7 +23,6 @@ class MenusService extends ChangeNotifier {
     menuBox.put('restaurant_menus', menus);
     menuBox.put('restaurant_menus_items', menusItems);
 
-
   }
 
 
@@ -41,8 +40,8 @@ class MenusService extends ChangeNotifier {
       var _restInfo = RestaurantModel.fromJson(jsonResponse);
 
       storeLocalMenu(restaurantDataURL : restaurantDataURL, restaurantInfo : _restInfo, menuBox: HiveBox );
-
       notifyListeners();
+
      if ( _data.statusCode == 200) {
        return true;
      }
