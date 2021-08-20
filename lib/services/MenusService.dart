@@ -14,8 +14,22 @@ class MenusService extends ChangeNotifier {
   void storeLocalMenu({String restaurantDataURL, RestaurantModel restaurantInfo, Box menuBox}) async {
 
     var name = restaurantInfo.restaurant.name;
+    var desc_en= restaurantInfo.restaurant.descriptionEn;
+    var desc_tr= restaurantInfo.restaurant.descriptionTr;
+    var image= restaurantInfo.restaurant.image;
+    var open_time = restaurantInfo.restaurant.availabilityStarts;
+    var close_time = restaurantInfo.restaurant.availabilityEnds;
+    var address = restaurantInfo.restaurant.contact.addressLine1;
 
     menuBox.put('restaurant_name', name);
+    menuBox.put('restaurant_desc_en', desc_en);
+    menuBox.put('restaurant_desc_tr', desc_tr);
+    menuBox.put('opendays', desc_tr);
+    menuBox.put('res_img', image);
+
+    menuBox.put('address', address);
+    menuBox.put('open_time', close_time);
+    menuBox.put('close_time', open_time);
 
     var menus = restaurantInfo.restaurant.menus;
     var menusItems = restaurantInfo.restaurant.menus;

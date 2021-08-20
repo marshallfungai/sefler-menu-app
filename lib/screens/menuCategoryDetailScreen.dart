@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:hive/hive.dart';
 import 'package:sefler_menu/style.dart';
 
@@ -24,54 +25,64 @@ class _MenuCategoryDetailScreenState extends State<MenuCategoryDetailScreen> {
 
     return Scaffold(
       backgroundColor: Colors.white10,
-      body: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 15.0),
-        decoration: BoxDecoration(
-            color: Colors.red,
-            image: DecorationImage(
-              image: AssetImage('assets/images/sefler-menu-bg2.jpg'),
-              fit: BoxFit.cover,
-              colorFilter: new ColorFilter.mode(primaryColorDark.withOpacity(.8), BlendMode.srcOver),
-            )
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              padding: const EdgeInsets.only(top: 40.0),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.baseline,
-                children: [
-                  Container(
-                    alignment: Alignment.topLeft,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.grey.withOpacity(.5),
-                        borderRadius: BorderRadius.circular(9.0),
-                      ),
-                      child: IconButton(
-                        icon: Icon(
-                          Icons.arrow_back,
-                          color: Colors.white,
+      body: SafeArea(
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 15.0),
+          decoration: BoxDecoration(
+              color: Colors.red,
+              image: DecorationImage(
+                image: AssetImage('assets/images/sefler-menu-bg2.jpg'),
+                fit: BoxFit.cover,
+                colorFilter: new ColorFilter.mode(primaryColorDark.withOpacity(.8), BlendMode.srcOver),
+              )
+          ),
+          child: Column(
+
+            children: [
+              Container(
+                padding: const EdgeInsets.only(top: 40.0),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Container(
+                      alignment: Alignment.topLeft,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.grey.withOpacity(.5),
+                          borderRadius: BorderRadius.circular(9.0),
                         ),
-                        onPressed: () => Navigator.pop(context),
+                        child: IconButton(
+                          icon: Icon(
+                            Icons.arrow_back,
+                            color: Colors.white,
+                          ),
+                          onPressed: () => Navigator.pop(context),
+                        ),
                       ),
                     ),
-                  ),
-                  SizedBox(width: 20),
-                  Container(
-
-                      child: Text(widget.menu.nameEn,  style: TextStyle(fontSize: 23, color: Colors.white))),
-                ],
+                    SizedBox(width: 20),
+                    Container(
+                        child: Text(widget.menu.nameEn,  style: TextStyle(fontSize: 23, color: Colors.white))
+                    ),
+                  ],
+                ),
               ),
-            ),
-            Expanded(
-              child: ListView.builder(
-                itemCount: widget.menu.items.length,
-                itemBuilder: (context, item) => _categoryDetail(context, item)
-               ),
-            )
-          ],
+              SizedBox(height: windowHeight * 0.1,),
+              Container(
+                height: windowHeight * 0.6,
+                child: new Swiper(
+                  itemBuilder: (BuildContext context, int index) {
+                    return _categoryDetail(context, index);
+                    //return AccountCard( context, a_accounts[index], index);
+                  },
+                  itemCount:  widget.menu.items.length,
+                  itemWidth: 300.0,
+                  layout: SwiperLayout.STACK,
+                  //loop: false,
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
@@ -83,22 +94,21 @@ class _MenuCategoryDetailScreenState extends State<MenuCategoryDetailScreen> {
     var menuItem = widget.menu.items[index];
 
     return Container(
-      height: height * .20,
 
       child: Card(
-        color: Colors.white10,
+        color: Colors.white.withOpacity(0.9),
         elevation: 2,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(7.0),
         ),
 
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        child: Column(
+         // mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Container(
-              height:  MediaQuery.of(context).size.width * 0.25,
-              width: MediaQuery.of(context).size.width * 0.25,
+              height:  MediaQuery.of(context).size.width * 0.35,
+             // width: MediaQuery.of(context).size.width * 0.25,
               margin: EdgeInsets.all(10),
               decoration: BoxDecoration(
                 // borderRadius: BorderRadius.circular(20),
@@ -107,37 +117,35 @@ class _MenuCategoryDetailScreenState extends State<MenuCategoryDetailScreen> {
                       fit: BoxFit.cover)
               ),
             ),
-            Expanded(
-              child: Container(
-
-                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 7),
-                child: Column(
-                  children: [
-                    Container(
-                      alignment: Alignment.topLeft,
-                      child: Text(
-                        menuItem.nameEn,
-                        style: TextStyle(
-                          color: Colors.white.withOpacity(0.8),
+            Container(
+              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 7),
+              child: Column(
+                children: [
+                  Container(
+                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+                    alignment: Alignment.topLeft,
+                    child: Text(
+                      menuItem.nameEn,
+                      style: TextStyle(
+                        color: Colors.black.withOpacity(0.8),
+                        fontWeight: FontWeight.w700,
+                        fontSize: 24,
+                      ),
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+                    child:  Text(menuItem.descriptionEn,
+                      style: TextStyle(
                           fontSize: 16,
-                        ),
-                      ),
-                    ),
-                    Container(
-                      alignment: Alignment.topLeft,
-                      child:  Text(menuItem.descriptionEn, maxLines: 2, style: TextStyle(color: Colors.white.withOpacity(0.5)),),
-                    ),
-                    Container(
-                      alignment: Alignment.topLeft,
-                      child:OutlineButton(
-                        onPressed: () {
-                        //  print('Received click');
-                        },
-                        child: Text(menuItem.price, style: TextStyle(color: Colors.deepOrange.withOpacity(0.5)),),
-                      ),
-                    ),
-                  ],
-                ),
+                          color: Colors.black.withOpacity(0.8)),),
+                  ),
+                  Divider(color: Colors.black.withOpacity(0.4),),
+                  Container(
+                    alignment: Alignment.topLeft,
+                    child:Text(menuItem.price, style: TextStyle(fontSize: 30, fontWeight: FontWeight.w700, color: Colors.deepOrange.withOpacity(0.5)),),
+                  ),
+                ],
               ),
             )
 

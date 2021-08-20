@@ -43,7 +43,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                       horizontal: 32
                   ),
                   margin: EdgeInsets.only(
-                      top: windowHeight * .10
+                      top: windowHeight * .15
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -59,7 +59,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                       Container(
                         margin: EdgeInsets.symmetric(vertical: 20),
                         child: Text(
-                          'The app that gets you all your menus favorite place across Cyprus restaurants, bars and coffee shops. Keep your hands to yourself, stay safe and enjoy the food.',
+                          'Paperless menu at your favourite restaurant, bar or chill-spot. Created with your health in mind.',
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               color: Colors.white.withOpacity(0.7),
@@ -84,17 +84,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                         margin: EdgeInsets.symmetric(vertical: 20),
                         child: Column(
                           children: [
-                            Text(
-                              'Sponsored By',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  color: Colors.white.withOpacity(0.9),
-                                  fontSize: 16,
-                                fontWeight: FontWeight.bold
-                              ),
-                            ),
-                            SizedBox(height: windowHeight * .01,),
-                            Image.asset('assets/images/nethouse-networks.png', height: windowHeight * .04,),
+
                             SizedBox(height: windowHeight * .01,),
                             Text(
                               'For The Community.',

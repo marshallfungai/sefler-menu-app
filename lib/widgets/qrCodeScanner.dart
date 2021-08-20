@@ -47,21 +47,24 @@ class _QrCodeScannerState extends State<QrCodeScanner> {
       setState(() {
 
         resultType = qrResult.type;
-
-        print('------------------------------- type');
-
-        print(qrResult.type);
-        print(resultType);
-
-
         result = 'Tarama iptal edildi...';
 
         if(resultType.toString() == 'Barcode')  {
-           restaurantDataURL = qrResult.rawContent;
+
+          // restaurantDataURL = qrResult.rawContent;
+           String DataURL = qrResult.rawContent;
+           String findDomain = 'http://localhost';
+           String addApi = 'https://iambriansith.com/demo/shefler-menu';
            resultStatus = true;
+
+           print('------------------------------- type ------------------------------------');
+           print(qrResult.type);
+           print(DataURL);
+           // RegExp exp = RegExp(r"(\w+)");
+           // print(exp);
+           restaurantDataURL = addApi + DataURL.substring(findDomain.length);
+           print(restaurantDataURL);
         }
-
-
       });
     } on PlatformException catch (ex) {
       if (ex.code == BarcodeScanner.cameraAccessDenied) {
@@ -69,14 +72,14 @@ class _QrCodeScannerState extends State<QrCodeScanner> {
 
           resultStatus =false;
           result = "Kamera izni reddedildi";
-          print(result);
+          //print(result);
 
         });
       } else {
         setState(() {
           result = "Unknown Error $ex";
           resultStatus =false;
-          print(result);
+          //print(result);
         });
       }
     } on FormatException {
@@ -106,12 +109,10 @@ class _QrCodeScannerState extends State<QrCodeScanner> {
     double windowHeight = MediaQuery.of(context).size.height;
     double windowWidth = MediaQuery.of(context).size.width;
 
-
-
     return SizedBox(
 
-      width: windowWidth * .30,
-      height:  windowWidth * .30,
+      width: windowWidth * .40,
+      height:  windowWidth * .40,
 
       child: FloatingActionButton(
         onPressed:  () async{

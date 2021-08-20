@@ -1,8 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-import 'package:provider/provider.dart';
+import 'package:sefler_menu/constants/globals.dart';
 import 'package:sefler_menu/screens/screens.dart';
 import 'package:sefler_menu/services/MenusService.dart';
 import 'package:sefler_menu/style.dart';
@@ -10,7 +9,6 @@ import 'package:sefler_menu/style.dart';
 class MenuCategoryScreen extends StatefulWidget {
 
   final restaurantDataURL;
-
   MenuCategoryScreen({this.restaurantDataURL});
 
   @override
@@ -31,9 +29,7 @@ class _MenuCategoryScreenState extends State<MenuCategoryScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-
     _checkMenuFound = processMenuData();
-
   }
 
 
@@ -43,11 +39,23 @@ class _MenuCategoryScreenState extends State<MenuCategoryScreen> {
      return _menusService.getInfo(restaurantDataURL: widget.restaurantDataURL, HiveBox: menuBox);
   }
 
+  detectService(index, context) {
+    print('clicked this index');
+    print(index);
+    // Navigator.push(
+    //     context,
+    //     MaterialPageRoute(
+    //         builder: (context) => ServiceDetailScreen(
+    //           index: index,
+    //           daysLeft: i_internet_expiration_left_days,
+    //         )
+    //     ));
+  }
+
 
 
   @override
   Widget build(BuildContext context) {
-
 
     double windowHeight = MediaQuery.of(context).size.height;
     double windowWidth = MediaQuery.of(context).size.width;
@@ -94,66 +102,113 @@ class _MenuCategoryScreenState extends State<MenuCategoryScreen> {
 
     double windowHeight = MediaQuery.of(context).size.height;
     double windowWidth = MediaQuery.of(context).size.width;
+    final FixedExtentScrollController _controller = FixedExtentScrollController();
+    int serviceIndex = 0;
 
     menuBox =  Hive.box<dynamic>('restaurantDataURL');
 
     String restaurantName = menuBox.get('restaurant_name');
-    var menus =  menuBox.get("restaurant_menus");
+    String restaurant_desc_tr = menuBox.get('restaurant_desc_tr');
+    String address = menuBox.get('address');
+    String open_time = menuBox.get('open_time');
+    String close_time = menuBox.get('close_time');
 
+    List menus =  menuBox.get("restaurant_menus");
 
     return  Column(
       children: [
-        Row(
-          children: [
-            Container(
-              alignment: Alignment.topLeft,
-              margin: EdgeInsets.only(top: 40),
-              padding: const EdgeInsets.symmetric(horizontal: 15.0),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.grey.withOpacity(.5),
-                  borderRadius: BorderRadius.circular(9.0),
-                ),
-                child: IconButton(
-                  icon: Icon(
-                    Icons.arrow_back,
-                    color: Colors.white,
+        Container(
+          child: Row(
+            children: [
+              Container(
+                alignment: Alignment.topLeft,
+                margin: EdgeInsets.only(top: 40),
+                padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.grey.withOpacity(.5),
+                    borderRadius: BorderRadius.circular(9.0),
                   ),
-                  onPressed: () => Navigator.pop(context),
+                  child: IconButton(
+                    icon: Icon(
+                      Icons.arrow_back,
+                      color: Colors.white,
+                    ),
+                    onPressed: () => Navigator.pop(context),
+                  ),
                 ),
               ),
-            ),
-            Container(
-                margin: EdgeInsets.only(top: windowHeight * 0.05 ),
-                child: Text(restaurantName,  style: TextStyle(fontWeight: FontWeight.bold,  fontSize: 30, color: Colors.white.withOpacity(0.7)))),
-          ],
+              Container(
+                  margin: EdgeInsets.only(top: windowHeight * 0.05 ),
+                  child: Text(restaurantName,  style: TextStyle(fontWeight: FontWeight.bold,  fontSize: 30, color: Colors.white.withOpacity(0.7)))),
+            ],
+          ),
+        ),
+        Container(
+          height: windowHeight * .25,
+          width: windowWidth * .9,
+          margin: EdgeInsets.only(top: 10),
+          padding:
+          EdgeInsets.symmetric(horizontal: 10.0, vertical: 10),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(10),
+                  bottomLeft: Radius.circular(10),
+                  topRight: Radius.circular(10),
+                  bottomRight: Radius.circular(10),
+              ),
+              image: DecorationImage(
+                  colorFilter: new ColorFilter.mode(
+                      Colors.black.withOpacity(.5),
+                      BlendMode.srcOver),
+                  image: AssetImage(tempBannerBG),
+                  fit: BoxFit.cover)),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text(
+                restaurantName,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w700,
+                  fontSize: 13.0,
+                ),
+              ),
+              Text(
+                restaurant_desc_tr,
+                style: TextStyle(
+                  color: Colors.white.withOpacity(0.6),
+                  fontSize: 16.0,
+                ),
+              ),
+              Divider( color: Colors.white.withOpacity(0.1),),
+              Row(
+                children: [
+                  Text('Open : ', style: TextStyle(color: Colors.white),),
+                  Text(
+                    open_time + ' - '+ close_time,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w700,
+                      fontSize: 11.0,
+                    ),
+                  ),
+                ],
+              ),
+
+            ],
+          ),
         ),
         Expanded(
-          child: CarouselSlider(
-            scrollDirection: Axis.vertical,
-            // height: 100,
-            viewportFraction: 0.2,
-            aspectRatio: 1.0,
-            // aspectRatio: 2.0,
-            // viewportFraction: 0.9,
-            initialPage: 0,
-            enableInfiniteScroll: false,
-            autoPlay: false,
-            autoPlayCurve: Curves.fastOutSlowIn,
-            enlargeCenterPage: true,
-            onPageChanged: (index) {
-              setState(() {
-                pageIndex = index;
-              });
+          child: ListView.builder(
+            //controller: _controller,
+            physics: BouncingScrollPhysics(),
+            itemCount: menus.length,
+            itemBuilder: (BuildContext context,int index){
+              return _category(context, menus[index]);
             },
 
-            items: menus.map<Widget>((menuCat) {
-              return Builder(
-                builder: (BuildContext context) {
-                  return _category(context, menuCat);
-                },
-              );
-            }).toList(),
           ),
         ),
       ],
@@ -162,29 +217,46 @@ class _MenuCategoryScreenState extends State<MenuCategoryScreen> {
 
 
 
-
   Widget _category(context, menuCat ) {
-
 
     double windowHeight = MediaQuery.of(context).size.height;
     double windowWidth = MediaQuery.of(context).size.width;
 
-    return GestureDetector(
+    String menu_name = menuCat.nameEn;
+    String menu_name_tr = menuCat.nameTr;
+    String menu_desc = menuCat.descriptionEn;
+    String menu_desc_tr = menuCat.descriptionTr;
+
+   return GestureDetector(
       onTap: (){
         Navigator.push(context, MaterialPageRoute(builder: (context)=> MenuCategoryDetailScreen(menu: menuCat,)));
 
         },
       child: Container(
-        //height: 300,
-        margin: EdgeInsets.symmetric(vertical: 10),
+       // height: 50,
+        margin: EdgeInsets.symmetric(vertical: 7, horizontal: 10),
+        padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
         decoration: BoxDecoration(
           color: Colors.white10,
-          borderRadius: BorderRadius.all( Radius.circular(20)),
+          borderRadius: BorderRadius.all( Radius.circular(10)),
         ),
-        child: GestureDetector(
-          child: Center(
-            child: Text(getCapitalizeString(str: menuCat.nameEn),  style: TextStyle(color: Colors.white, fontSize: 20)),
-          ),
+        child: Row(
+          children: [
+            Container(
+              width: windowWidth * 0.8,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(menu_name,  style: TextStyle(color: Colors.white, fontSize: 20)),
+                  Text(menu_desc,  style: TextStyle(color: Colors.white.withOpacity(0.6), fontSize: 14)),
+                ],
+              ),
+            ),
+           Icon(
+               Icons.arrow_forward_ios,
+             color: Colors.white.withOpacity(0.6),
+           )
+          ],
         ),
       ),
     );

@@ -36,6 +36,7 @@ dependencies:
   carousel_slider: ^1.4.1
   url_launcher: ^5.7.10
   shared_preferences: ^0.5.6+3
+  flutter_swiper: ^1.1.6
 
 
 dev_dependencies:

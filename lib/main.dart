@@ -68,7 +68,7 @@ class MyApp extends StatelessWidget {
          future: _checkIsFirstSeen,
          builder: (context, snapshot) {
 
-         if(snapshot.hasData && snapshot.data == true) {
+          if(snapshot.hasData && snapshot.data == true) {
              return  MyHomePage();
            }
 

@@ -35,24 +35,7 @@ class _ActionSections extends State<ActionSections> {
           top : windowHeight * .40,
           child: QrCodeScanner(scaffold: widget.scaffoldKey,),
         ),
-        Positioned(
-         left: 0,
-         right: 0,
-         bottom : windowHeight * .10,
-         child: Container(
-          padding: EdgeInsets.all(5),
-          margin: EdgeInsets.symmetric(horizontal:  90),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.all( Radius.circular(10) ),
-          ),
-          child: GestureDetector(
-            onTap: (){
-             // Navigator.push(context, MaterialPageRoute(builder: (context)=> MenuCategoryScreen(  restaurantDataURL:  'restaurantDataURL')));
-              launch(_nethouseLaunchUri.toString());
-              },
-              child: Center(child: Text('Sponsored By : Nethouse'))),
-        ))
+
       ],
     );
   }
