@@ -29,29 +29,16 @@ class _MenuCategoryScreenState extends State<MenuCategoryScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    _checkMenuFound = processMenuData();
+    //_checkMenuFound = processMenuData();
   }
 
 
   Future <bool> processMenuData() async {
-
      menuBox = await Hive.openBox('restaurantDataURL');
-     return _menusService.getInfo(restaurantDataURL: widget.restaurantDataURL, HiveBox: menuBox);
-  }
+     var menus = await _menusService.getInfo(restaurantDataURL: widget.restaurantDataURL, HiveBox: menuBox);
 
-  detectService(index, context) {
-    print('clicked this index');
-    print(index);
-    // Navigator.push(
-    //     context,
-    //     MaterialPageRoute(
-    //         builder: (context) => ServiceDetailScreen(
-    //           index: index,
-    //           daysLeft: i_internet_expiration_left_days,
-    //         )
-    //     ));
+     return menus;
   }
-
 
 
   @override
@@ -72,7 +59,7 @@ class _MenuCategoryScreenState extends State<MenuCategoryScreen> {
                 )
             ),
           child: FutureBuilder(
-            future: _checkMenuFound,
+            future: processMenuData(),
             builder: (ctx, snapshot) {
 
               if(snapshot.connectionState == ConnectionState.waiting) {
@@ -80,13 +67,13 @@ class _MenuCategoryScreenState extends State<MenuCategoryScreen> {
               }
 
               if(snapshot.connectionState == ConnectionState.none && snapshot.data==null) {
-                return Center(child: Text('No Data Found', style: TextStyle(color: Colors.white),),);
+                return Center(child: Text('No Data Found 1', style: TextStyle(color: Colors.white),),);
               }
 
-              if(snapshot.connectionState == ConnectionState.done && snapshot.data==false) {
-                return Center(child: Text('No Data Found', style: TextStyle(color: Colors.white),),);
+             if(snapshot.connectionState == ConnectionState.done && snapshot.data==false) {
+                return Center(child: Text('No Data Found 2', style: TextStyle(color: Colors.white),),);
               }
-              //print(snapshot.data);
+
              // return Center(child: Text('No Data Found', style: TextStyle(color: Colors.white),),);
               return _menuCategoryPage(context, widget.restaurantDataURL);
 

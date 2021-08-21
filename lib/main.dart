@@ -71,9 +71,7 @@ class MyApp extends StatelessWidget {
           if(snapshot.hasData && snapshot.data == true) {
              return  MyHomePage();
            }
-
            return OnBoardingScreen();
-
          }
      );
 
