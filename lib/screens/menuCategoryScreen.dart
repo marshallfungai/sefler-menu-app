@@ -1,29 +1,27 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
-import 'package:sefler_menu/constants/globals.dart';
-import 'package:sefler_menu/screens/screens.dart';
-import 'package:sefler_menu/services/MenusService.dart';
-import 'package:sefler_menu/style.dart';
+import '../constants/globals.dart';
+import '../http/httpRestaurant.dart';
+import '../screens/screens.dart';
+import '../services/MenusService.dart';
+import '../style.dart';
 
 class MenuCategoryScreen extends StatefulWidget {
-
   final restaurantDataURL;
   MenuCategoryScreen({this.restaurantDataURL});
 
   @override
   _MenuCategoryScreenState createState() => _MenuCategoryScreenState();
-
 }
 
 class _MenuCategoryScreenState extends State<MenuCategoryScreen> {
-
   MenusService _menusService = new MenusService();
-  Future<bool> _checkMenuFound ;
+  late Future<bool> _checkMenuFound;
 
   var pageIndex = 0;
-  Box<dynamic> menuBox;
-  List<dynamic> categoryMenuList ;
+  late Box<dynamic> menuBox;
+  late List<dynamic> categoryMenuList;
 
   @override
   void initState() {
@@ -32,18 +30,15 @@ class _MenuCategoryScreenState extends State<MenuCategoryScreen> {
     //_checkMenuFound = processMenuData();
   }
 
-
-  Future <bool> processMenuData() async {
-     menuBox = await Hive.openBox('restaurantDataURL');
-     var menus = await _menusService.getInfo(restaurantDataURL: widget.restaurantDataURL, HiveBox: menuBox);
-
-     return menus;
+  Future<bool> processMenuData() async {
+    menuBox = await Hive.openBox('restaurantDataURL');
+    bool status = await _menusService.getInfo(
+        restaurantDataURL: widget.restaurantDataURL, HiveBox: menuBox);
+    return status;
   }
-
 
   @override
   Widget build(BuildContext context) {
-
     double windowHeight = MediaQuery.of(context).size.height;
     double windowWidth = MediaQuery.of(context).size.width;
 
@@ -51,58 +46,66 @@ class _MenuCategoryScreenState extends State<MenuCategoryScreen> {
         backgroundColor: Colors.white10,
         body: Container(
           decoration: BoxDecoration(
-                color: Colors.red,
-                image: DecorationImage(
-                    image: AssetImage('assets/images/sefler-menu-bg2.jpg'),
-                    fit: BoxFit.cover,
-                    colorFilter: new ColorFilter.mode(primaryColorDark.withOpacity(.8), BlendMode.srcOver),
-                )
-            ),
+              color: Colors.red,
+              image: DecorationImage(
+                image: const AssetImage('assets/images/sefler-menu-bg2.jpg'),
+                fit: BoxFit.cover,
+                colorFilter: ColorFilter.mode(
+                    primaryColorDark.withOpacity(.8), BlendMode.srcOver),
+              )),
           child: FutureBuilder(
             future: processMenuData(),
             builder: (ctx, snapshot) {
-
-              if(snapshot.connectionState == ConnectionState.waiting) {
-                  return  Center(child: CircularProgressIndicator(),);
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
               }
 
-              if(snapshot.connectionState == ConnectionState.none && snapshot.data==null) {
-                return Center(child: Text('No Data Found 1', style: TextStyle(color: Colors.white),),);
+              if (snapshot.connectionState == ConnectionState.none &&
+                  snapshot.data == null) {
+                return const Center(
+                  child: Text(
+                    'No Data Found 1',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                );
               }
 
-             if(snapshot.connectionState == ConnectionState.done && snapshot.data==false) {
-                return Center(child: Text('No Data Found 2', style: TextStyle(color: Colors.white),),);
+              if (snapshot.connectionState == ConnectionState.done &&
+                  snapshot.data == false) {
+                return Center(
+                  child: Text(
+                    'No Data Found 2',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                );
               }
 
-             // return Center(child: Text('No Data Found', style: TextStyle(color: Colors.white),),);
+              // return Center(child: Text('No Data Found', style: TextStyle(color: Colors.white),),);
               return _menuCategoryPage(context, widget.restaurantDataURL);
-
             },
           ),
-        )
-    );
+        ));
   }
 
-
-
   Widget _menuCategoryPage(context, restaurantDataURL) {
-
     double windowHeight = MediaQuery.of(context).size.height;
     double windowWidth = MediaQuery.of(context).size.width;
-    final FixedExtentScrollController _controller = FixedExtentScrollController();
+    final FixedExtentScrollController _controller =
+        FixedExtentScrollController();
     int serviceIndex = 0;
 
-    menuBox =  Hive.box<dynamic>('restaurantDataURL');
+    menuBox = Hive.box<dynamic>('restaurantDataURL');
 
     String restaurantName = menuBox.get('restaurant_name');
     String restaurant_desc_tr = menuBox.get('restaurant_desc_tr');
     String address = menuBox.get('address');
     String open_time = menuBox.get('open_time');
     String close_time = menuBox.get('close_time');
+    List menus = menuBox.get("restaurant_menus");
 
-    List menus =  menuBox.get("restaurant_menus");
-
-    return  Column(
+    return Column(
       children: [
         Container(
           child: Row(
@@ -126,8 +129,12 @@ class _MenuCategoryScreenState extends State<MenuCategoryScreen> {
                 ),
               ),
               Container(
-                  margin: EdgeInsets.only(top: windowHeight * 0.05 ),
-                  child: Text(restaurantName,  style: TextStyle(fontWeight: FontWeight.bold,  fontSize: 30, color: Colors.white.withOpacity(0.7)))),
+                  margin: EdgeInsets.only(top: windowHeight * 0.05),
+                  child: Text(restaurantName,
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 30,
+                          color: Colors.white.withOpacity(0.7)))),
             ],
           ),
         ),
@@ -135,19 +142,17 @@ class _MenuCategoryScreenState extends State<MenuCategoryScreen> {
           height: windowHeight * .25,
           width: windowWidth * .9,
           margin: EdgeInsets.only(top: 10),
-          padding:
-          EdgeInsets.symmetric(horizontal: 10.0, vertical: 10),
+          padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 10),
           decoration: BoxDecoration(
               borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(10),
-                  bottomLeft: Radius.circular(10),
-                  topRight: Radius.circular(10),
-                  bottomRight: Radius.circular(10),
+                topLeft: Radius.circular(10),
+                bottomLeft: Radius.circular(10),
+                topRight: Radius.circular(10),
+                bottomRight: Radius.circular(10),
               ),
               image: DecorationImage(
                   colorFilter: new ColorFilter.mode(
-                      Colors.black.withOpacity(.5),
-                      BlendMode.srcOver),
+                      Colors.black.withOpacity(.5), BlendMode.srcOver),
                   image: AssetImage(tempBannerBG),
                   fit: BoxFit.cover)),
           child: Column(
@@ -169,12 +174,17 @@ class _MenuCategoryScreenState extends State<MenuCategoryScreen> {
                   fontSize: 16.0,
                 ),
               ),
-              Divider( color: Colors.white.withOpacity(0.1),),
+              Divider(
+                color: Colors.white.withOpacity(0.1),
+              ),
               Row(
                 children: [
-                  Text('Open : ', style: TextStyle(color: Colors.white),),
                   Text(
-                    open_time + ' - '+ close_time,
+                    'Open : ',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  Text(
+                    open_time + ' - ' + close_time,
                     style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.w700,
@@ -183,7 +193,6 @@ class _MenuCategoryScreenState extends State<MenuCategoryScreen> {
                   ),
                 ],
               ),
-
             ],
           ),
         ),
@@ -192,40 +201,40 @@ class _MenuCategoryScreenState extends State<MenuCategoryScreen> {
             //controller: _controller,
             physics: BouncingScrollPhysics(),
             itemCount: menus.length,
-            itemBuilder: (BuildContext context,int index){
+            itemBuilder: (BuildContext context, int index) {
               return _category(context, menus[index]);
             },
-
           ),
         ),
       ],
     );
   }
 
-
-
-  Widget _category(context, menuCat ) {
-
+  Widget _category(context, menuCat) {
     double windowHeight = MediaQuery.of(context).size.height;
     double windowWidth = MediaQuery.of(context).size.width;
 
-    String menu_name = menuCat.nameEn;
-    String menu_name_tr = menuCat.nameTr;
-    String menu_desc = menuCat.descriptionEn;
-    String menu_desc_tr = menuCat.descriptionTr;
+    String menu_name = menuCat['name_en'];
+    String menu_name_tr = menuCat['name_tr'];
+    String menu_desc = menuCat['description_en'];
+    String menu_desc_tr = menuCat['description_tr'];
 
-   return GestureDetector(
-      onTap: (){
-        Navigator.push(context, MaterialPageRoute(builder: (context)=> MenuCategoryDetailScreen(menu: menuCat,)));
-
-        },
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => MenuCategoryDetailScreen(
+                      menu: menuCat,
+                    )));
+      },
       child: Container(
-       // height: 50,
+        // height: 50,
         margin: EdgeInsets.symmetric(vertical: 7, horizontal: 10),
         padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
         decoration: BoxDecoration(
           color: Colors.white10,
-          borderRadius: BorderRadius.all( Radius.circular(10)),
+          borderRadius: BorderRadius.all(Radius.circular(10)),
         ),
         child: Row(
           children: [
@@ -234,22 +243,25 @@ class _MenuCategoryScreenState extends State<MenuCategoryScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(menu_name,  style: TextStyle(color: Colors.white, fontSize: 20)),
-                  Text(menu_desc,  style: TextStyle(color: Colors.white.withOpacity(0.6), fontSize: 14)),
+                  Text(menu_name,
+                      style: TextStyle(color: Colors.white, fontSize: 20)),
+                  Text(menu_desc,
+                      style: TextStyle(
+                          color: Colors.white.withOpacity(0.6), fontSize: 14)),
                 ],
               ),
             ),
-           Icon(
-               Icons.arrow_forward_ios,
-             color: Colors.white.withOpacity(0.6),
-           )
+            Icon(
+              Icons.arrow_forward_ios,
+              color: Colors.white.withOpacity(0.6),
+            )
           ],
         ),
       ),
     );
   }
 
-  String getCapitalizeString({String str}) {
+  String getCapitalizeString({required String str}) {
     var words = str.split(" ");
     var newWords = words.map<String>((word) {
       return word[0].toUpperCase() + word.substring(1);
