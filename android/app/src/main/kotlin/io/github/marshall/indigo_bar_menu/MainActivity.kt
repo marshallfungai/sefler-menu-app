@@ -1,4 +1,4 @@
-package io.github.marshall.sefler_menu
+package io.github.marshall.indigo_bar_menu
 
 import io.flutter.embedding.android.FlutterActivity
 

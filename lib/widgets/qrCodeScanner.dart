@@ -1,11 +1,6 @@
-import 'dart:math';
-
-import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:provider/provider.dart';
-import 'package:sefler_menu/screens/screens.dart';
-import 'package:sefler_menu/services/MenusService.dart';
+import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
+import '../screens/screens.dart';
 
 class QrCodeScanner extends StatefulWidget {
   final scaffold;
@@ -16,61 +11,11 @@ class QrCodeScanner extends StatefulWidget {
 }
 
 class _QrCodeScannerState extends State<QrCodeScanner> {
-  var result, resultContent;
-  var resultType, restaurantDataURL;
-  bool resultStatus = false;
-
-  // print(result.type); // The result type (barcode, cancelled, failed)
-  // print(result.rawContent); // The barcode content
-  // print(result.format); // The barcode format (as enum)
-  // print(result.formatNote); // If a unknown format was scanned this field contains a note
+  var restaurantDataURL;
 
   @override
   initState() {
-    result = null;
-    resultType = null;
-    resultStatus = false;
-    restaurantDataURL = null;
-
     super.initState();
-    resultStatus = false;
-  }
-
-  Future _scanQR() async {
-    try {
-      var qrResult = await BarcodeScanner.scan();
-      setState(() {
-        resultType = qrResult.type;
-        result = 'Tarama iptal edildi...';
-
-        if (resultType.toString() == 'Barcode') {
-          restaurantDataURL = qrResult.rawContent;
-          resultStatus = true;
-        }
-      });
-    } on PlatformException catch (ex) {
-      if (ex.code == BarcodeScanner.cameraAccessDenied) {
-        setState(() {
-          resultStatus = false;
-          result = "Kamera izni reddedildi";
-        });
-      } else {
-        setState(() {
-          result = "Unknown Error $ex";
-          resultStatus = false;
-        });
-      }
-    } on FormatException {
-      setState(() {
-        resultStatus = false;
-        result = "Herhangi bir şey taramadan önce geri düğmesine bastınız";
-      });
-    } catch (ex) {
-      setState(() {
-        resultStatus = false;
-        result = "Unknown Error $ex";
-      });
-    }
   }
 
   @override
@@ -83,9 +28,15 @@ class _QrCodeScannerState extends State<QrCodeScanner> {
       height: windowWidth * .40,
       child: FloatingActionButton(
         onPressed: () async {
-          await _scanQR();
+          var scanResult = await Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const SimpleBarcodeScannerPage(),
+              ));
 
-          if (resultStatus == true) {
+          bool _validURL = Uri.parse(scanResult).isAbsolute;
+
+          if (_validURL == true) {
             Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -96,14 +47,14 @@ class _QrCodeScannerState extends State<QrCodeScanner> {
               backgroundColor: Colors.pinkAccent,
               duration: Duration(seconds: 5),
               content: Row(
-                children: <Widget>[
+                children: const <Widget>[
                   CircleAvatar(
                     maxRadius: 20,
                     backgroundImage:
                         AssetImage("assets/images/sefler-menu-logo.png"),
                   ),
                   Spacer(),
-                  Text(result)
+                  Text('Invalid')
                 ],
               ),
             );
@@ -114,7 +65,7 @@ class _QrCodeScannerState extends State<QrCodeScanner> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset('assets/icons/qr-code.png'),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Text('Tarama Menüsü')
