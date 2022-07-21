@@ -20,9 +20,8 @@ class Routes {
 
   static final Handler _MenuCatScreenhandler =
       Handler(handlerFunc: (context, Map<String, dynamic> params) {
-    print('handler for menu cat');
     String _restaurantDataUrl =
-        apiRestaurantMenuRoute + params['id'][0].toString();
+        apiRestaurantMenuRoute + '/' + params['id'][0].toString();
     return MenuCategoryScreen(restaurantDataURL: _restaurantDataUrl);
   });
 
@@ -38,23 +37,3 @@ class Routes {
     );
   }
 }
-
-//
-// Route<dynamic> generateRoute(RouteSettings settings) {
-//   const String LandingScreenRoute = '/';
-//   const String MenuCatScreenRoute = '/menu';
-//
-//   switch (settings.name) {
-//     case LandingScreenRoute:
-//       return MaterialPageRoute(builder: (context) => LandingScreen());
-//     case MenuCatScreenRoute:
-//       String _restaurantDataUrl = apiRestaurantMenuRoute + '/8';
-//       print(settings.arguments);
-//       return MaterialPageRoute(
-//           builder: (context) =>
-//               MenuCategoryScreen(restaurantDataURL: _restaurantDataUrl));
-//       return MaterialPageRoute(builder: (context) => LandingScreen());
-//     default:
-//       return MaterialPageRoute(builder: (context) => LandingScreen());
-//   }
-// }

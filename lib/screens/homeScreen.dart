@@ -2,11 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
 import 'package:provider/provider.dart';
-import '../models/RestaurantModel.dart';
 import '../services/MenusService.dart';
-import 'screens.dart';
 import '../style.dart';
 import '../widgets/widgets.dart';
 
