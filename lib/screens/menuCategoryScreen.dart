@@ -39,9 +39,6 @@ class _MenuCategoryScreenState extends State<MenuCategoryScreen> {
 
   @override
   Widget build(BuildContext context) {
-    double windowHeight = MediaQuery.of(context).size.height;
-    double windowWidth = MediaQuery.of(context).size.width;
-
     return Scaffold(
         backgroundColor: Colors.white10,
         body: Container(
