@@ -8,18 +8,21 @@ import 'package:http/http.dart' as http;
 
 Future<bool> fn_httpRestaurant(restaurantDataURL, Box menuBox) async {
   var response = await http.get(Uri.parse(restaurantDataURL));
+  if (kDebugMode) {
+    print('------------------restaurant debug-----------------');
+    print(restaurantDataURL);
+  }
 
   if (response.statusCode == 200) {
     final Map<String, dynamic> jsonResponse = json.decode(response.body);
 
     if (kDebugMode) {
-      //print('------------------restaurant debug-----------------');
-      //print(jsonResponse['restaurant']);
-      //print(jsonResponse['restaurant']);
-      //print(jsonResponse['restaurant']['name']);
-      // print(jsonResponse['restaurant']['description_en']);
-      //print(jsonResponse['restaurant']['menus'][0]['restaurant_id']);
-      // print(jsonResponse['restaurant']['image']);
+      print(jsonResponse['restaurant']);
+      print(jsonResponse['restaurant']);
+      print(jsonResponse['restaurant']['name']);
+      print(jsonResponse['restaurant']['description_en']);
+      print(jsonResponse['restaurant']['menus'][0]['restaurant_id']);
+      print(jsonResponse['restaurant']['image']);
     }
 
     var name = jsonResponse['restaurant']['name'].toString();
