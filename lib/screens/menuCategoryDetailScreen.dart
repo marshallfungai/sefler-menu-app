@@ -32,7 +32,7 @@ class _MenuCategoryDetailScreenState extends State<MenuCategoryDetailScreen> {
               image: DecorationImage(
                 image: AssetImage('assets/images/sefler-menu-bg2.jpg'),
                 fit: BoxFit.cover,
-                colorFilter: new ColorFilter.mode(
+                colorFilter: ColorFilter.mode(
                     primaryColorDark.withOpacity(.8), BlendMode.srcOver),
               )),
           child: Column(
@@ -50,7 +50,7 @@ class _MenuCategoryDetailScreenState extends State<MenuCategoryDetailScreen> {
                           borderRadius: BorderRadius.circular(9.0),
                         ),
                         child: IconButton(
-                          icon: Icon(
+                          icon: const Icon(
                             Icons.arrow_back,
                             color: Colors.white,
                           ),
@@ -61,8 +61,8 @@ class _MenuCategoryDetailScreenState extends State<MenuCategoryDetailScreen> {
                     SizedBox(width: 20),
                     Container(
                         child: Text(widget.menu['name_en'],
-                            style:
-                                TextStyle(fontSize: 23, color: Colors.white))),
+                            style: const TextStyle(
+                                fontSize: 23, color: Colors.white))),
                   ],
                 ),
               ),
@@ -116,7 +116,7 @@ class _MenuCategoryDetailScreenState extends State<MenuCategoryDetailScreen> {
                       fit: BoxFit.cover)),
             ),
             Container(
-              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 7),
+              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 7),
               child: Column(
                 children: [
                   Container(

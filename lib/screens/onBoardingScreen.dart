@@ -89,20 +89,39 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.symmetric(horizontal: 52, vertical: 25),
-                  width: double.infinity,
-                  decoration:
-                      BoxDecoration(borderRadius: BorderRadius.circular(10)),
-                  child: RaisedButton(
-                      padding:
-                          EdgeInsets.symmetric(vertical: 15, horizontal: 25),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                      color: Colors.white,
-                      child: Text(
-                        'Get Started',
-                        style: TextStyle(fontSize: 15),
+                    margin: EdgeInsets.symmetric(horizontal: 52, vertical: 25),
+                    width: double.infinity,
+                    decoration:
+                        BoxDecoration(borderRadius: BorderRadius.circular(10)),
+                    // child: RaisedButton(
+                    //     padding:
+                    //         EdgeInsets.symmetric(vertical: 15, horizontal: 25),
+                    //     shape: RoundedRectangleBorder(
+                    //       borderRadius: BorderRadius.circular(10.0),
+                    //     ),
+                    //     color: Colors.white,
+                    //     child: Text(
+                    //       'Get Started',
+                    //       style: TextStyle(fontSize: 15),
+                    //     ),
+                    //     onPressed: () {
+                    //       setState(() {
+                    //         Navigator.push(
+                    //             context,
+                    //             MaterialPageRoute(
+                    //                 builder: (context) =>
+                    //                     MyHomePage(title: 'Şefler Menü')));
+                    //       });
+                    //     }),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.green,
+                        onPrimary: Colors.white,
+                        shadowColor: Colors.greenAccent,
+                        elevation: 3,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(32.0)),
+                        minimumSize: Size(100, 40), //////// HERE
                       ),
                       onPressed: () {
                         setState(() {
@@ -112,8 +131,12 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                                   builder: (context) =>
                                       MyHomePage(title: 'Şefler Menü')));
                         });
-                      }),
-                )
+                      },
+                      child: Text(
+                        'Get Started',
+                        style: TextStyle(fontSize: 15),
+                      ),
+                    ))
               ],
             )));
   }
