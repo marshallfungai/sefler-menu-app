@@ -30,15 +30,14 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     if (kIsWeb) {}
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Indigo Bar Menü',
-      theme: ThemeData(
-        primaryColor: primaryColor,
-        fontFamily: 'Poppins',
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
-      onGenerateRoute: router.generator,
-      // initialRoute: 'LandingScreenRoute'
-    );
+        debugShowCheckedModeBanner: false,
+        title: 'Indigo Bar Menü',
+        theme: ThemeData(
+          primaryColor: primaryColor,
+          fontFamily: 'Poppins',
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+        ),
+        onGenerateRoute: router.generator,
+        initialRoute: '/');
   }
 }

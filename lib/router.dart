@@ -14,7 +14,6 @@ class Routes {
 
   static final Handler _LandingScreenhandler =
       Handler(handlerFunc: (context, Map<String, dynamic> params) {
-    print('handler for landing');
     return LandingScreen();
   });
 
