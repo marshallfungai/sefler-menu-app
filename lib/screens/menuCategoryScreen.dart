@@ -71,7 +71,7 @@ class _MenuCategoryScreenState extends State<MenuCategoryScreen> {
 
               if (snapshot.connectionState == ConnectionState.done &&
                   snapshot.data == false) {
-                return Center(
+                return const Center(
                   child: Text(
                     'No Data Found 2',
                     style: TextStyle(color: Colors.white),
@@ -107,26 +107,27 @@ class _MenuCategoryScreenState extends State<MenuCategoryScreen> {
         Container(
           child: Row(
             children: [
+              // Container(
+              //   alignment: Alignment.topLeft,
+              //   margin: EdgeInsets.only(top: 40),
+              //   padding: const EdgeInsets.symmetric(horizontal: 15.0),
+              //   child: Container(
+              //     decoration: BoxDecoration(
+              //       color: Colors.grey.withOpacity(.5),
+              //       borderRadius: BorderRadius.circular(9.0),
+              //     ),
+              //     child: IconButton(
+              //       icon: Icon(
+              //         Icons.arrow_back,
+              //         color: Colors.white,
+              //       ),
+              //       onPressed: () => Navigator.pop(context),
+              //     ),
+              //   ),
+              // ),
               Container(
-                alignment: Alignment.topLeft,
-                margin: EdgeInsets.only(top: 40),
-                padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.grey.withOpacity(.5),
-                    borderRadius: BorderRadius.circular(9.0),
-                  ),
-                  child: IconButton(
-                    icon: Icon(
-                      Icons.arrow_back,
-                      color: Colors.white,
-                    ),
-                    onPressed: () => Navigator.pop(context),
-                  ),
-                ),
-              ),
-              Container(
-                  margin: EdgeInsets.only(top: windowHeight * 0.05),
+                  margin: EdgeInsets.only(
+                      top: windowHeight * 0.05, left: windowWidth * 0.1),
                   child: Text(restaurantName,
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
