@@ -142,14 +142,14 @@ class _MenuCategoryScreenState extends State<MenuCategoryScreen> {
           margin: EdgeInsets.only(top: 10),
           padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 10),
           decoration: BoxDecoration(
-              borderRadius: BorderRadius.only(
+              borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(10),
                 bottomLeft: Radius.circular(10),
                 topRight: Radius.circular(10),
                 bottomRight: Radius.circular(10),
               ),
               image: DecorationImage(
-                  colorFilter: new ColorFilter.mode(
+                  colorFilter: ColorFilter.mode(
                       Colors.black.withOpacity(.5), BlendMode.srcOver),
                   image: AssetImage(tempBannerBG),
                   fit: BoxFit.cover)),
@@ -159,7 +159,7 @@ class _MenuCategoryScreenState extends State<MenuCategoryScreen> {
             children: <Widget>[
               Text(
                 restaurantName,
-                style: TextStyle(
+                style: const TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.w700,
                   fontSize: 13.0,
@@ -177,7 +177,7 @@ class _MenuCategoryScreenState extends State<MenuCategoryScreen> {
               ),
               Row(
                 children: [
-                  Text(
+                  const Text(
                     'Open : ',
                     style: TextStyle(color: Colors.white),
                   ),
