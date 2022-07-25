@@ -1,17 +1,14 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
-import '../models/RestaurantModel.dart';
 import '../services/MenusService.dart';
-import 'screens.dart';
 import '../style.dart';
-
+import '../widgets/widgets.dart';
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+  const MyHomePage({required this.title});
 
   final String title;
 
@@ -20,26 +17,22 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   MenusService _menus = new MenusService();
 
-
   @override
   Widget build(BuildContext context) {
-
     return MultiProvider(
-      providers:  [
+      providers: [
         ChangeNotifierProvider<MenusService>.value(value: _menus),
       ],
-      child:  Consumer<MenusService>(builder: (context, model, child) {
-
+      child: Consumer<MenusService>(builder: (context, model, child) {
+        if (kIsWeb) {
+          print('--------this is the web version : home screen');
+        }
         return _homeScanner(context);
       }),
-
     );
-
-
   }
 
   Widget _homeScanner(context) {
@@ -48,24 +41,22 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Stack(
         children: [
           Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
                 color: Colors.red,
                 image: DecorationImage(
                     image: AssetImage('assets/images/sefler-menu-home-bg.jpg'),
-                    fit: BoxFit.cover
-                )
-            ),
+                    fit: BoxFit.cover)),
           ),
           Container(
             color: primaryColor.withOpacity(0.85),
             child: Center(
-               child: ActionSections(scaffoldKey:  _scaffoldKey),
+              child: QrCodeScanner(
+                scaffold: _scaffoldKey,
+              ),
             ),
           )
-
         ],
       ),
-
     );
   }
 }

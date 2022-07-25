@@ -1,17 +1,16 @@
-# Şefler Menü (Chefs Menu)
+# indigo_bar_menu
 
-Şefler Menü : master menu for your convinience
+Indigo Bar - menu for your convinience
 
-Şefler Menü is a turkish derivitive which means Chef's menu. This app is aimed to bring menus to a contactless age brought about by the pandemic. It lets outlets generate a qr code that they can put in full display of their customers. <br>
-A group of restaurants can come together and share this app for their regulars in the city/town/area. Each outlet is given access to a dashboard to add or update their menus.
- 
+## Getting Started
 
-<div align="center" style="display: flex; flex-direction:row; justify-content: space-around">
-    <img src="/screenshots/sefler-app-1.jpeg" width="400px"/> 
-     <img src="/screenshots/sefler-app-2.jpeg" width="400px"/> 
-     <img src="/screenshots/sefler-app-3.jpeg" width="400px"/> 
-     <img src="/screenshots/sefler-app-4.jpeg" width="400px"/> 
-     <img src="/screenshots/sefler-app-5.jpeg" width="400px"/> 
-</div>
+This project is a starting point for a Flutter application.
 
+A few resources to get you started if this is your first Flutter project:
 
+- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
+- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+
+For help getting started with Flutter, view our
+[online documentation](https://flutter.dev/docs), which offers tutorials,
+samples, guidance on mobile development, and a full API reference.

@@ -2,24 +2,21 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 //Shared Preferences functions
 class SharedPreferencesStorage {
-
   static Future<bool> checkSharedPreference(s_key) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    if(prefs.containsKey(s_key)) {
+    if (prefs.containsKey(s_key)) {
       return true;
     }
 
-     return false;
-
+    return false;
   }
 
-  static Future<void> setSharedPreference(s_type, s_key, value) async {
-
+  static Future<bool> setSharedPreference(s_type, s_key, value) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     s_key = s_key.toLowerCase();
 
-    switch(s_type) {
+    switch (s_type) {
       case 'int':
         prefs.setInt(s_key, value);
         break;
@@ -36,13 +33,11 @@ class SharedPreferencesStorage {
     return true;
   }
 
-
   static Future getSharedPreference(s_type, s_key) async {
-
     SharedPreferences prefs = await SharedPreferences.getInstance();
     s_key = s_key.toLowerCase();
 
-    switch(s_type) {
+    switch (s_type) {
       case 'int':
         prefs.getInt(s_key);
         break;
@@ -59,14 +54,9 @@ class SharedPreferencesStorage {
     return true;
   }
 
-
-
   static Future<String> getSharedPreferenceString(s_key) async {
-
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    return prefs.getString(s_key);
-
+    return prefs.getString(s_key).toString();
   }
-
 }
