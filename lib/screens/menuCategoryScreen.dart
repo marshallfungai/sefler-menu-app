@@ -42,6 +42,7 @@ class _MenuCategoryScreenState extends State<MenuCategoryScreen> {
     return Scaffold(
         backgroundColor: Colors.white10,
         body: Container(
+          width: double.infinity,
           decoration: BoxDecoration(
               color: Colors.red,
               image: DecorationImage(

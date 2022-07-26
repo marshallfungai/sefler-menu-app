@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper_plus/flutter_swiper_plus.dart';
 import 'package:hive/hive.dart';
@@ -27,6 +28,7 @@ class _MenuCategoryDetailScreenState extends State<MenuCategoryDetailScreen> {
       body: SafeArea(
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 15.0),
+          constraints: const BoxConstraints.expand(),
           decoration: BoxDecoration(
               color: Colors.red,
               image: DecorationImage(
@@ -69,19 +71,7 @@ class _MenuCategoryDetailScreenState extends State<MenuCategoryDetailScreen> {
               SizedBox(
                 height: windowHeight * 0.1,
               ),
-              Container(
-                height: windowHeight * 0.6,
-                child: Swiper(
-                  itemBuilder: (BuildContext context, int index) {
-                    return _categoryDetail(
-                        context, widget.menu['items'][index]);
-                  },
-                  itemCount: widget.menu['items'].length,
-                  itemWidth: 300.0,
-                  layout: SwiperLayout.STACK,
-                  //loop: false,
-                ),
-              )
+              _platformWidget(context, widget.menu)
             ],
           ),
         ),
@@ -89,10 +79,45 @@ class _MenuCategoryDetailScreenState extends State<MenuCategoryDetailScreen> {
     );
   }
 
-  Widget _categoryDetail(context, item) {
+  Widget _platformWidget(context, menu) {
+    double windowHeight = MediaQuery.of(context).size.height;
+    double windowWidth = MediaQuery.of(context).size.width;
+
+    if (kIsWeb) {
+      return Expanded(
+        child: ListView.builder(
+          //controller: _controller,
+          physics: BouncingScrollPhysics(),
+          itemCount: menu['items'].length,
+          itemBuilder: (BuildContext context, int index) {
+            return _categoryDetail_web(context, menu['items'][index]);
+          },
+        ),
+      );
+    } else {
+      return Container(
+        height: windowHeight * 0.6,
+        child: Swiper(
+          itemBuilder: (BuildContext context, int index) {
+            return _categoryDetail_mobile(context, menu['items'][index]);
+          },
+          itemCount: menu['items'].length,
+          itemWidth: 300.0,
+          layout: SwiperLayout.STACK,
+          //loop: false,
+        ),
+      );
+    }
+  }
+
+  Widget _categoryDetail_mobile(context, item) {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
     var menuItem = item;
+    String menu_name = menuItem['name_en'];
+    String menu_name_tr = menuItem['name_tr'];
+    String menu_desc = menuItem['description_en'];
+    String menu_desc_tr = menuItem['description_tr'];
 
     return Container(
       child: Card(
@@ -123,7 +148,7 @@ class _MenuCategoryDetailScreenState extends State<MenuCategoryDetailScreen> {
                     padding: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
                     alignment: Alignment.topLeft,
                     child: Text(
-                      menuItem['name_en'],
+                      menuItem['name_tr'],
                       style: TextStyle(
                         color: Colors.black.withOpacity(0.8),
                         fontWeight: FontWeight.w700,
@@ -134,7 +159,7 @@ class _MenuCategoryDetailScreenState extends State<MenuCategoryDetailScreen> {
                   Container(
                     padding: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
                     child: Text(
-                      menuItem['description_en'],
+                      menuItem['description_tr'],
                       style: TextStyle(
                           fontSize: 16, color: Colors.black.withOpacity(0.8)),
                     ),
@@ -157,6 +182,59 @@ class _MenuCategoryDetailScreenState extends State<MenuCategoryDetailScreen> {
             )
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _categoryDetail_web(context, item) {
+    double windowHeight = MediaQuery.of(context).size.height;
+    double windowWidth = MediaQuery.of(context).size.width;
+
+    var menuItem = item;
+    String menu_name = menuItem['name_en'];
+    String menu_name_tr = menuItem['name_tr'];
+    String menu_desc = menuItem['description_en'];
+    String menu_desc_tr = menuItem['description_tr'];
+    String menu_image = menuItem['image'];
+
+    return Container(
+      // height: 50,
+      margin: EdgeInsets.symmetric(vertical: 7, horizontal: 10),
+      padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+      decoration: const BoxDecoration(
+        color: Colors.white10,
+        borderRadius: BorderRadius.all(Radius.circular(10)),
+      ),
+      child: Row(
+        children: [
+          Container(
+              width: windowWidth * 0.2,
+              margin: EdgeInsets.only(right: 5),
+              child: Image.network(menu_image)),
+          Expanded(
+            //width: windowWidth * 0.8,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(menu_name,
+                    style: TextStyle(color: Colors.white, fontSize: 20)),
+                Text(menu_desc,
+                    style: TextStyle(
+                        color: Colors.white.withOpacity(0.6), fontSize: 14)),
+                Container(
+                  alignment: Alignment.topLeft,
+                  child: Text(
+                    menuItem['price'],
+                    style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w700,
+                        color: Colors.deepOrange.withOpacity(0.5)),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
