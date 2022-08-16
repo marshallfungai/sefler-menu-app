@@ -1,15 +1,11 @@
 import 'dart:io';
-import 'dart:js';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:fluro/fluro.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'router.dart';
-import 'landingScreen.dart';
-import 'services/SharedPreferenceService.dart';
 import 'style.dart';
-import 'screens/screens.dart';
 
 main() async {
   WidgetsFlutterBinding.ensureInitialized();

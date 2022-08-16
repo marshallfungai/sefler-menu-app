@@ -12,9 +12,15 @@ class Routes {
   static String LandingScreenRoute = "/";
   static String MenuCatScreenRoute = '/menu/:id';
 
+  // static final Handler _LandingScreenhandler =
+  //     Handler(handlerFunc: (context, Map<String, dynamic> params) {
+  //   return LandingScreen();
+  // });
+
   static final Handler _LandingScreenhandler =
       Handler(handlerFunc: (context, Map<String, dynamic> params) {
-    return LandingScreen();
+    String _restaurantDataUrl = apiRestaurantMenuRoute + '/1';
+    return MenuCategoryScreen(restaurantDataURL: _restaurantDataUrl);
   });
 
   static final Handler _MenuCatScreenhandler =
