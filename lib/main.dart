@@ -12,9 +12,6 @@ main() async {
   await Hive.initFlutter();
   final router = FluroRouter();
   Routes.setupRouter(router);
-  // if (kIsWeb) {
-  //   setUrlStrategy(PathUrlStrategy());
-  // }
   runApp(MyApp(router));
 }
 

@@ -44,13 +44,8 @@ class _MenuCategoryScreenState extends State<MenuCategoryScreen> {
         body: Container(
           width: double.infinity,
           decoration: BoxDecoration(
-              color: Colors.red,
-              image: DecorationImage(
-                image: const AssetImage('assets/images/sefler-menu-bg2.jpg'),
-                fit: BoxFit.cover,
-                colorFilter: ColorFilter.mode(
-                    primaryColorDark.withOpacity(.8), BlendMode.srcOver),
-              )),
+            color: Colors.black,
+          ),
           child: FutureBuilder(
             future: processMenuData(),
             builder: (ctx, snapshot) {
