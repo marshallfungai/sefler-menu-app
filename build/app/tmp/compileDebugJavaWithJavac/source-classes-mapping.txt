@@ -1,0 +1,4 @@
+io/flutter/plugins/GeneratedPluginRegistrant.java
+ io.flutter.plugins.GeneratedPluginRegistrant
+io/github/marshall/indigo_bar_menu/BuildConfig.java
+ io.github.marshall.indigo_bar_menu.BuildConfig

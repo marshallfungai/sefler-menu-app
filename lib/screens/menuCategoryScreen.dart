@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../constants/globals.dart';
 import '../http/httpRestaurant.dart';
 import '../screens/screens.dart';
@@ -30,11 +31,11 @@ class _MenuCategoryScreenState extends State<MenuCategoryScreen> {
     //_checkMenuFound = processMenuData();
   }
 
-  Future<bool> processMenuData() async {
+  Future<List> processMenuData() async {
     menuBox = await Hive.openBox('restaurantDataURL');
-    bool status = await _menusService.getInfo(
+    List catList = await _menusService.getCatList(
         restaurantDataURL: widget.restaurantDataURL, HiveBox: menuBox);
-    return status;
+    return catList;
   }
 
   @override
@@ -43,7 +44,7 @@ class _MenuCategoryScreenState extends State<MenuCategoryScreen> {
         backgroundColor: Colors.white10,
         body: Container(
           width: double.infinity,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             color: Colors.black,
           ),
           child: FutureBuilder(
@@ -75,52 +76,41 @@ class _MenuCategoryScreenState extends State<MenuCategoryScreen> {
                 );
               }
 
-              // return Center(child: Text('No Data Found', style: TextStyle(color: Colors.white),),);
-              return _menuCategoryPage(context, widget.restaurantDataURL);
+              return _menuCategoryPage(context, snapshot.data);
             },
           ),
         ));
   }
 
-  Widget _menuCategoryPage(context, restaurantDataURL) {
+  Widget _menuCategoryPage(context, categoryList) {
     double windowHeight = MediaQuery.of(context).size.height;
     double windowWidth = MediaQuery.of(context).size.width;
     final FixedExtentScrollController _controller =
         FixedExtentScrollController();
-    int serviceIndex = 0;
-
-    menuBox = Hive.box<dynamic>('restaurantDataURL');
-
-    String restaurantName = menuBox.get('restaurant_name');
-    String restaurant_desc_tr = menuBox.get('restaurant_desc_tr');
-    String address = menuBox.get('address');
-    String open_time = menuBox.get('open_time');
-    String close_time = menuBox.get('close_time');
-    List menus = menuBox.get("restaurant_menus");
 
     return Column(
       children: [
         Container(
           child: Row(
             children: [
-              // Container(
-              //   alignment: Alignment.topLeft,
-              //   margin: EdgeInsets.only(top: 40),
-              //   padding: const EdgeInsets.symmetric(horizontal: 15.0),
-              //   child: Container(
-              //     decoration: BoxDecoration(
-              //       color: Colors.grey.withOpacity(.5),
-              //       borderRadius: BorderRadius.circular(9.0),
-              //     ),
-              //     child: IconButton(
-              //       icon: Icon(
-              //         Icons.arrow_back,
-              //         color: Colors.white,
-              //       ),
-              //       onPressed: () => Navigator.pop(context),
-              //     ),
-              //   ),
-              // ),
+              Container(
+                alignment: Alignment.topLeft,
+                margin: EdgeInsets.only(top: 40),
+                padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.grey.withOpacity(.5),
+                    borderRadius: BorderRadius.circular(9.0),
+                  ),
+                  child: IconButton(
+                    icon: const Icon(
+                      Icons.arrow_back,
+                      color: Colors.white,
+                    ),
+                    onPressed: () => {launchUrl(Uri.parse(indigoWebsite))},
+                  ),
+                ),
+              ),
               Container(
                   margin: EdgeInsets.only(
                       top: windowHeight * 0.05, left: windowWidth * 0.1),
@@ -162,7 +152,7 @@ class _MenuCategoryScreenState extends State<MenuCategoryScreen> {
                 ),
               ),
               Text(
-                restaurant_desc_tr,
+                restaurantDesc,
                 style: TextStyle(
                   color: Colors.white.withOpacity(0.6),
                   fontSize: 16.0,
@@ -179,7 +169,7 @@ class _MenuCategoryScreenState extends State<MenuCategoryScreen> {
                   ),
                   Text(
                     open_time + ' - ' + close_time,
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.w700,
                       fontSize: 11.0,
@@ -192,11 +182,10 @@ class _MenuCategoryScreenState extends State<MenuCategoryScreen> {
         ),
         Expanded(
           child: ListView.builder(
-            //controller: _controller,
             physics: BouncingScrollPhysics(),
-            itemCount: menus.length,
+            itemCount: categoryList.length,
             itemBuilder: (BuildContext context, int index) {
-              return _category(context, menus[index]);
+              return _category(context, categoryList[index]);
             },
           ),
         ),
@@ -208,10 +197,9 @@ class _MenuCategoryScreenState extends State<MenuCategoryScreen> {
     double windowHeight = MediaQuery.of(context).size.height;
     double windowWidth = MediaQuery.of(context).size.width;
 
-    String menu_name = menuCat['name_en'];
-    String menu_name_tr = menuCat['name_tr'];
-    String menu_desc = menuCat['description_en'];
-    String menu_desc_tr = menuCat['description_tr'];
+    String menu_name = menuCat['name'];
+    int menuCat_id = menuCat['id'];
+    String menu_desc = "menuCat['description']";
 
     return GestureDetector(
       onTap: () {
@@ -219,14 +207,13 @@ class _MenuCategoryScreenState extends State<MenuCategoryScreen> {
             context,
             MaterialPageRoute(
                 builder: (context) => MenuCategoryDetailScreen(
-                      menu: menuCat,
-                    )));
+                    menuCat_id: menuCat_id, menuName: menu_name)));
       },
       child: Container(
         // height: 50,
         margin: EdgeInsets.symmetric(vertical: 7, horizontal: 10),
         padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           color: Colors.white10,
           borderRadius: BorderRadius.all(Radius.circular(10)),
         ),
@@ -238,10 +225,8 @@ class _MenuCategoryScreenState extends State<MenuCategoryScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(menu_name,
-                      style: TextStyle(color: Colors.white, fontSize: 20)),
-                  Text(menu_desc,
-                      style: TextStyle(
-                          color: Colors.white.withOpacity(0.6), fontSize: 14)),
+                      style:
+                          const TextStyle(color: Colors.white, fontSize: 20)),
                 ],
               ),
             ),

@@ -19,14 +19,16 @@ class Routes {
 
   static final Handler _LandingScreenhandler =
       Handler(handlerFunc: (context, Map<String, dynamic> params) {
-    String _restaurantDataUrl = apiRestaurantMenuRoute + '/1';
+    // String _restaurantDataUrl = apiRestaurantMenuRoute + '/1';
+    String _restaurantDataUrl = webAppCategoriesApi;
     return MenuCategoryScreen(restaurantDataURL: _restaurantDataUrl);
   });
 
   static final Handler _MenuCatScreenhandler =
       Handler(handlerFunc: (context, Map<String, dynamic> params) {
-    String _restaurantDataUrl =
-        apiRestaurantMenuRoute + '/' + params['id'][0].toString();
+    // String _restaurantDataUrl =
+    //     apiRestaurantMenuRoute + '/' + params['id'][0].toString();
+    String _restaurantDataUrl = webAppCategoriesApi;
     return MenuCategoryScreen(restaurantDataURL: _restaurantDataUrl);
   });
 

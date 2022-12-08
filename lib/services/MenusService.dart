@@ -1,13 +1,23 @@
 import 'package:flutter/material.dart';
 import '../http/httpRestaurant.dart';
+import '../http/httpRestaurantCategories.dart';
 
 class MenusService extends ChangeNotifier {
   MenusService();
-  bool processStatus = false;
+  List categories = [];
+  List products = [];
 
-  Future<bool> getInfo({required String restaurantDataURL, HiveBox}) async {
-    processStatus = await fn_httpRestaurant(restaurantDataURL, HiveBox);
+  Future getCatMenuItems({required String restaurantDataURL, catId}) async {
+    print(restaurantDataURL);
+    products = await fn_httpRestaurant(restaurantDataURL, catId);
     notifyListeners();
-    return processStatus;
+    return products;
+  }
+
+  Future getCatList({required String restaurantDataURL, HiveBox}) async {
+    List categories =
+        await fn_httpRestaurantCategories(restaurantDataURL, HiveBox);
+    notifyListeners();
+    return categories;
   }
 }
