@@ -9,6 +9,8 @@ import 'package:http/http.dart' as http;
 Future<List> fn_httpRestaurant(restaurantDataURL, catId) async {
   String menuItemsUrl = restaurantDataURL + '&category=' + catId.toString();
   var response = await http.get(Uri.parse(menuItemsUrl));
+  print('-----------menu items url');
+  print(menuItemsUrl);
   if (response.statusCode == 200) {
     final jsonResponse = json.decode(response.body);
 

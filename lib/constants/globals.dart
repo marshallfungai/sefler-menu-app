@@ -13,9 +13,9 @@ String apiRestaurantMenuRoute = webDomain + "api/restaurant";
 String wpMenuConsumer = 'ck_c69438b302764f73152385c4af0b698ae90f2c83';
 String wpMenuSecret = 'cs_89acdf65a9092fa2689e2794c5e8600dacc51124';
 String accessControl =
-    '?consumer_key=' + wpMenuConsumer + '&consumer_secret=' + wpMenuSecret;
+    '&consumer_key=' + wpMenuConsumer + '&consumer_secret=' + wpMenuSecret;
 
 String webAppCategoriesApi =
-    webAppApiUrl + '/products/categories' + accessControl;
-String webAppProductsApi = webAppApiUrl + '/products' + accessControl;
+    webAppApiUrl + '/products/categories?lang=tr' + accessControl;
+String webAppProductsApi = webAppApiUrl + '/products?lang=tr' + accessControl;
 String tempBannerBG = "assets/images/sefler-menu-home-bg2.jpg";

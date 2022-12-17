@@ -29,6 +29,7 @@ class _MenuCategoryScreenState extends State<MenuCategoryScreen> {
     // TODO: implement initState
     super.initState();
     //_checkMenuFound = processMenuData();
+    //print('we are here');
   }
 
   Future<List> processMenuData() async {
@@ -75,7 +76,6 @@ class _MenuCategoryScreenState extends State<MenuCategoryScreen> {
                   ),
                 );
               }
-
               return _menuCategoryPage(context, snapshot.data);
             },
           ),
@@ -107,7 +107,13 @@ class _MenuCategoryScreenState extends State<MenuCategoryScreen> {
                       Icons.arrow_back,
                       color: Colors.white,
                     ),
-                    onPressed: () => {launchUrl(Uri.parse(indigoWebsite))},
+                    onPressed: () {
+                      if (widget.restaurantDataURL.contains('reload')) {
+                        Navigator.pop(context);
+                      } else {
+                        launchUrl(Uri.parse(indigoWebsite));
+                      }
+                    },
                   ),
                 ),
               ),
@@ -200,14 +206,26 @@ class _MenuCategoryScreenState extends State<MenuCategoryScreen> {
     String menu_name = menuCat['name'];
     int menuCat_id = menuCat['id'];
     String menu_desc = "menuCat['description']";
+    List<int> with_subcategories = [38, 36, 40, 143, 210, 163];
 
     return GestureDetector(
       onTap: () {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => MenuCategoryDetailScreen(
-                    menuCat_id: menuCat_id, menuName: menu_name)));
+        if (with_subcategories.contains(menuCat_id)) {
+          String api = widget.restaurantDataURL +
+              '&reload&parent=' +
+              menuCat_id.toString();
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      MenuCategoryScreen(restaurantDataURL: api)));
+        } else {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => MenuCategoryDetailScreen(
+                      menuCat_id: menuCat_id, menuName: menu_name)));
+        }
       },
       child: Container(
         // height: 50,
@@ -245,7 +263,6 @@ class _MenuCategoryScreenState extends State<MenuCategoryScreen> {
     var newWords = words.map<String>((word) {
       return word[0].toUpperCase() + word.substring(1);
     });
-
     return newWords.join(' ');
   }
 }
